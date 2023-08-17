@@ -24,6 +24,14 @@ const CreateUserModel = async (body) => {
   }
 };
 
+//================================================================== Login ================================================
+const LoginModel = async (body) => {
+  const LoginUserQuerySql = 'SELECT * FROM candidateUser WHERE email = $1 AND password = $2';
+  values = [email, password];
+
+  return pool.query(LoginUserQuerySql, values);
+};
+
 //================================================= Export ========================================================
 
 module.exports = {
