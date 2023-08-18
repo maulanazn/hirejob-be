@@ -38,4 +38,5 @@ const LoginModel = async (body) => {
 
 module.exports = {
   CreateUserModel,
+  LoginModel,
 };
