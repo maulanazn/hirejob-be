@@ -55,10 +55,10 @@ const CreateUserController = async (req, res) => {
     // change data
     let data = {
       email: req.body.email,
+      name: req.body.name,
       password: req.body.password,
-      nama: req.body.nama,
       phone: req.body.phone,
-      jabatan: req.body.jabatan,
+      position: req.body.position,
     };
 
     const result = await UserModel.CreateUserModel(data);
