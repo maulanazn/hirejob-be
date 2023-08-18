@@ -1,6 +1,9 @@
+const jwt = require('jsonwebtoken');
+const secretKey = 'secretKey123';
+
 const UserModel = require('../model/UserModel');
 const { getUserByEmail } = require('../model/Auth');
-const { hashPassword } = require('../midlleware/hashing');
+const { hashPassword, comparePassword } = require('../midlleware/hashing');
 
 //======================================= Import ==========================================================
 
@@ -52,10 +55,10 @@ const CreateUserController = async (req, res) => {
     // change data
     let data = {
       email: req.body.email,
+      name: req.body.name,
       password: req.body.password,
-      nama: req.body.nama,
       phone: req.body.phone,
-      jabatan: req.body.jabatan,
+      position: req.body.position,
     };
 
     const result = await UserModel.CreateUserModel(data);
@@ -76,6 +79,61 @@ const CreateUserController = async (req, res) => {
   }
 };
 
+//============================================ Login Controller ====================================
+
+const loginController = async (req, res) => {
+  const { email, password } = req.body;
+  // Validation Email
+  let emailVertifikasi = await getUserByEmail(email);
+  console.log(emailVertifikasi);
+  if (!emailVertifikasi.rows[0]) {
+    return res.status(409).json({
+      error: 'Invalid email.',
+      message: 'The email address you entered is not valid. Please enter a valid email address.',
+      error: true,
+    });
+  }
+
+  const pwd = emailVertifikasi.rows[0].password; // get properti password
+  // Vertifikasi password
+  let VertifikasiLogin = await comparePassword({ passReq: password, passData: pwd });
+  if (!VertifikasiLogin) {
+    return res.status(401).json({
+      status: 'failed',
+      message: ' Your Password Authentication failed.',
+      error: true,
+      data: null,
+    });
+  }
+
+  // Payload
+  const token = emailVertifikasi.rows[0];
+  console.log(token);
+  const payload = {
+    id: token.id,
+    nama: token.nama,
+    email: token.email,
+  };
+
+  const token1 = jwt.sign(payload, secretKey, { expiresIn: '100s' });
+
+  try {
+    res.status(201).json({
+      status: 'Succes',
+      message: ' Login Succes',
+      error: false,
+      data: token1,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'Bad Request',
+      message: error.message,
+    });
+  }
+};
+
+//========================================= Export Login ====================================
 module.exports = {
   CreateUserController,
+  loginController,
 };
