@@ -113,11 +113,11 @@ const loginController = async (req, res) => {
   console.log(token);
   const payload = {
     id: token.id,
-    nama: token.nama,
-    email: token.email,
+    name: token.name,
+    // email: token.email,
   };
 
-  const token1 = jwt.sign(payload, secretKey, { expiresIn: '100s' });
+  const token1 = jwt.sign(payload, secretKey, { expiresIn: '10000s' });
 
   try {
     res.status(201).json({
