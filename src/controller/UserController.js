@@ -94,6 +94,8 @@ const loginController = async (req, res) => {
     });
   }
 
+  console.log(emailVertifikasi);
+
   const pwd = emailVertifikasi.rows[0].password; // get properti password
   // Vertifikasi password
   let VertifikasiLogin = await comparePassword({ passReq: password, passData: pwd });
