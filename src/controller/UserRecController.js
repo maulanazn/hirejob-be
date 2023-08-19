@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const secretKey = "secretKey123";
 
 const UserRecModel = require("../model/UserRecModel");
-const { getUserByEmail } = require("../model/Auth");
+const { getUserRecByEmail } = require("../model/Auth");
 const { hashPassword, comparePassword } = require("../midlleware/hashing");
 
 //======================================= Import ==========================================================
@@ -38,7 +38,7 @@ const CreateUserRecController = async (req, res) => {
 	}
 
 	// Vertifikasi Email
-	let emailVertifikasi = await getUserByEmail(email);
+	let emailVertifikasi = await getUserRecByEmail(email);
 	console.log(emailVertifikasi);
 	if (emailVertifikasi.rows[0]) {
 		return res.status(409).json({
@@ -86,7 +86,7 @@ const CreateUserRecController = async (req, res) => {
 const loginController = async (req, res) => {
 	const { email, password } = req.body;
 	// Validation Email
-	let emailVertifikasi = await getUserByEmail(email);
+	let emailVertifikasi = await getUserRecByEmail(email);
 	console.log(emailVertifikasi);
 	if (!emailVertifikasi.rows[0]) {
 		return res.status(409).json({
