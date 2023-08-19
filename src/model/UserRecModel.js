@@ -34,9 +34,18 @@ const LoginModel = async (body) => {
   return pool.query(LoginUserQuerySql, values);
 };
 
+//================================================================== Verified User ================================================
+const ActivateUserRecModel = async (body) => {
+  const ActivateUserRecQuerySql = 'UPDATE user_recruiter SET verified=true WHERE id=$1';
+  values = [id];
+
+  return pool.query(ActivateUserRecQuerySql, values);
+};
+
 //================================================= Export ========================================================
 
 module.exports = {
   CreateUserRecModel,
   LoginModel,
+  ActivateUserRecModel,
 };

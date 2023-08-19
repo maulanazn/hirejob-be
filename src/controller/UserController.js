@@ -1,24 +1,25 @@
-const jwt = require('jsonwebtoken');
-const secretKey = 'secretKey123';
+const jwt = require("jsonwebtoken");
+const secretKey = "secretKey123";
 
-const UserModel = require('../model/UserModel');
-const { getUserByEmail } = require('../model/Auth');
-const { hashPassword, comparePassword } = require('../midlleware/hashing');
+const UserModel = require("../model/UserModel");
+const { getUserByEmail, getUserById } = require("../model/Auth");
+const { hashPassword, comparePassword } = require("../midlleware/hashing");
+const sendToMail = require("./../midlleware/sendemail");
 
 //======================================= Import ==========================================================
 
 //=========================================== Create User Controller ==================================
 
 const CreateUserController = async (req, res) => {
-  console.log('error');
+  console.log("error");
   const { password, email } = req.body;
-  console.log('error');
+  console.log("error");
   console.log(req.body);
   // Panjang password
   if (password.length <= 8) {
     return res.status(409).json({
-      status: ' fail',
-      message: 'Password to Short',
+      status: " fail",
+      message: "Password to Short",
       error: true,
     });
   }
@@ -30,8 +31,9 @@ const CreateUserController = async (req, res) => {
 
   if (!hasUpperCase || !hasLowerCase || !hasSpecialChar) {
     return res.status(409).json({
-      error: 'Non-unique password.',
-      message: 'The password you entered is not unique. Please choose a password that has not been used before.',
+      error: "Non-unique password.",
+      message:
+        "The password you entered is not unique. Please choose a password that has not been used before.",
       error: true,
     });
   }
@@ -41,8 +43,8 @@ const CreateUserController = async (req, res) => {
   console.log(emailVertifikasi);
   if (emailVertifikasi.rows[0]) {
     return res.status(409).json({
-      status: ' fail',
-      message: 'Email already exists.',
+      status: " fail",
+      message: "Email already exists.",
       error: true,
     });
   }
@@ -62,18 +64,25 @@ const CreateUserController = async (req, res) => {
     };
 
     const result = await UserModel.CreateUserModel(data);
-    console.log('rsult');
+    // sending email
+    sendToMail(
+      result.email,
+      "Verify email",
+      `<h1><a href="http://localhost:3001/user/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
+    );
+
+    console.log("rsult");
     console.log(result);
     res.status(201).json({
-      status: 'succes',
-      Message: 'Your Create Data Success',
+      status: "succes",
+      Message: "Your Create Data Success, please check your email",
       error: false,
       Data: result,
     });
   } catch (error) {
     res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
+      status: "Error ",
+      message: "Bad Server ",
       message: error.message,
     });
   }
@@ -88,9 +97,18 @@ const loginController = async (req, res) => {
   console.log(emailVertifikasi);
   if (!emailVertifikasi.rows[0]) {
     return res.status(409).json({
-      error: 'Invalid email.',
-      message: 'The email address you entered is not valid. Please enter a valid email address.',
+      error: "Invalid email.",
+      message:
+        "The email address you entered is not valid. Please enter a valid email address.",
       error: true,
+    });
+  }
+
+  // verifikasi verified is true or false
+  if (!emailVertifikasi.rows[0].verified) {
+    return res.status(401).json({
+      status: "Failed",
+      message: "You have to check your email first to verify your account",
     });
   }
 
@@ -98,11 +116,14 @@ const loginController = async (req, res) => {
 
   const pwd = emailVertifikasi.rows[0].password; // get properti password
   // Vertifikasi password
-  let VertifikasiLogin = await comparePassword({ passReq: password, passData: pwd });
+  let VertifikasiLogin = await comparePassword({
+    passReq: password,
+    passData: pwd,
+  });
   if (!VertifikasiLogin) {
     return res.status(401).json({
-      status: 'failed',
-      message: ' Your Password Authentication failed.',
+      status: "failed",
+      message: " Your Password Authentication failed.",
       error: true,
       data: null,
     });
@@ -117,18 +138,49 @@ const loginController = async (req, res) => {
     email: token.email,
   };
 
-  const token1 = jwt.sign(payload, secretKey, { expiresIn: '100s' });
+  const token1 = jwt.sign(payload, secretKey, { expiresIn: "100s" });
 
   try {
     res.status(201).json({
-      status: 'Succes',
-      message: ' Login Succes',
+      status: "Succes",
+      message: " Login Succes",
       error: false,
       data: token1,
     });
   } catch (error) {
     res.status(500).json({
-      status: 'Bad Request',
+      status: "Bad Request",
+      message: error.message,
+    });
+  }
+};
+
+//======================================== Activate User Controller =======================
+const activateUserController = async (req, res) => {
+  const { id } = req.params;
+
+  const findById = await getUserById(id);
+  if (!findById)
+    return res.status(409).json({
+      status: "Failed",
+      message: "wrong id or email",
+    });
+
+  const verifyingUser = await UserModel.ActivateUserModel(id);
+  if (!verifyingUser)
+    return res.status(409).json({
+      status: "Failed",
+      message: "Email verifying is failed, contact the developer on email",
+    });
+
+  try {
+    return res.status(200).json({
+      status: "Success",
+      message: "Email verifying is success",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "Bad Request",
       message: error.message,
     });
   }
@@ -138,4 +190,5 @@ const loginController = async (req, res) => {
 module.exports = {
   CreateUserController,
   loginController,
+  activateUserController,
 };

@@ -13,6 +13,19 @@ const getUserByEmail = async (email) => {
   );
 };
 
+const getUserById = async (id) => {
+  console.log('model getUserById');
+  return new Promise((resolve, reject) =>
+    pool.query(`SELECT * FROM users WHERE id ='${id}'`, (err, result) => {
+      if (!err) {
+        resolve(result);
+      } else {
+        reject(err);
+      }
+    })
+  );
+};
+
 const getUserRecByEmail = async (email) => {
   console.log('model getUserRecByEmail');
   return new Promise((resolve, reject) =>
@@ -26,7 +39,22 @@ const getUserRecByEmail = async (email) => {
   );
 };
 
+const getUserRecById = async (id) => {
+  console.log('model getUserRecById');
+  return new Promise((resolve, reject) =>
+    pool.query(`SELECT * FROM user_recruiter WHERE id ='${id}'`, (err, result) => {
+      if (!err) {
+        resolve(result);
+      } else {
+        reject(err);
+      }
+    })
+  );
+};
+
 module.exports = {
   getUserByEmail,
-  getUserRecByEmail
+  getUserById,
+  getUserRecByEmail,
+  getUserRecById,
 };
