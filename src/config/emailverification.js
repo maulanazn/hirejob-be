@@ -11,4 +11,4 @@ const sender = {
     email: process.env.BREVO_EMAIL_SERVER
 }
 
-export {transactionalEmailApi, sender};
+module.exports = {transactionalEmailApi, sender};

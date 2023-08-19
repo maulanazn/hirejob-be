@@ -35,7 +35,7 @@ const LoginModel = async (body) => {
 };
 
 //================================================================== Verified User ================================================
-const ActivateUserModel = async (body) => {
+const ActivateUserModel = async (id) => {
   const ActivateUserQuerySql = 'UPDATE users SET verified=true WHERE id=$1';
   values = [id];
 

@@ -35,7 +35,7 @@ const LoginModel = async (body) => {
 };
 
 //================================================================== Verified User ================================================
-const ActivateUserRecModel = async (body) => {
+const ActivateUserRecModel = async (id) => {
   const ActivateUserRecQuerySql = 'UPDATE user_recruiter SET verified=true WHERE id=$1';
   values = [id];
 
