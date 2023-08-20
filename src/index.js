@@ -8,6 +8,9 @@ const skillworkers = require('./route/skillWorkers');
 
 app.use(express.json());
 
+app.get('/', (req, res) => {
+    res.send("HIREJOB REST API SERVER");
+});
 app.use('/user', UserAuth);
 app.use('/recruiter', UserRecRoute);
 app.use('/workers', BodataWorker);
