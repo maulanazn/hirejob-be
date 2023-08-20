@@ -16,7 +16,7 @@ const getUserByEmail = async (email) => {
 const getUserById = async (id) => {
   console.log('model getUserById');
   return new Promise((resolve, reject) =>
-    pool.query(`SELECT * FROM users WHERE id ='${id}'`, (err, result) => {
+    pool.query(`SELECT * FROM users WHERE id = $1`, [id], (err, result) => {
       if (!err) {
         resolve(result);
       } else {

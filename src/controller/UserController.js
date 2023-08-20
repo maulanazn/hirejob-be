@@ -10,7 +10,7 @@ const sendToMail = require("./../midlleware/sendemail");
 
 //=========================================== Get User By Id Controller ==================================
 const GetUserByIdController = async (req, res) => {
-  const id = req.payload;
+  const id = req.payload.id;
 
   try {
     const resultUserById = await getUserById(id);
@@ -18,7 +18,7 @@ const GetUserByIdController = async (req, res) => {
     return res.status(200).json({
       status: "succes",
       Message: "Success get by id",
-      Data: resultUserById.rows[0],
+      Data: resultUserById.rows
     });
   } catch (error) {
     return res.status(500).json({
@@ -121,7 +121,6 @@ const loginController = async (req, res) => {
       error: "Invalid email.",
       message:
         "The email address you entered is not valid. Please enter a valid email address.",
-      error: true,
     });
   }
 
