@@ -68,7 +68,7 @@ const CreateUserController = async (req, res) => {
     sendToMail(
       result.email,
       "Verify email",
-      `<h1><a href="http://localhost:3001/user/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
+      `<h1><a href="https://lazy-teal-piranha-vest.cyclic.cloud/user/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
     );
 
     console.log("rsult");
