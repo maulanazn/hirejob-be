@@ -8,6 +8,27 @@ const sendToMail = require("./../midlleware/sendemail");
 
 //======================================= Import ==========================================================
 
+//=========================================== Get User By Id Controller ==================================
+const GetUserByIdController = async (req, res) => {
+  const id = req.payload;
+
+  try {
+    const resultUserById = await getUserById(id);
+    
+    return res.status(200).json({
+      status: "succes",
+      Message: "Success get by id",
+      Data: resultUserById.rows[0],
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "Failed",
+      Message: "Failed get by id",
+      Data: error.message
+    });    
+  }
+}
+
 //=========================================== Create User Controller ==================================
 
 const CreateUserController = async (req, res) => {
@@ -188,6 +209,7 @@ const activateUserController = async (req, res) => {
 
 //========================================= Export Login ====================================
 module.exports = {
+  GetUserByIdController,
   CreateUserController,
   loginController,
   activateUserController,
