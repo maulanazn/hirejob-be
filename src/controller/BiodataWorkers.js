@@ -277,6 +277,7 @@ const CreateandUpdatePhotoControler = async (req, res) => {
         data: CreateData,
       });
     } else {
+      await cloudinary.uploader.destroy(req.file.path);
       const cloudphotoProfil = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
 
       let data = {

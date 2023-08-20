@@ -135,7 +135,7 @@ const loginController = async (req, res) => {
   console.log(token);
   const payload = {
     id: token.id,
-    nama: token.nama,
+    name: token.name,
     email: token.email,
   };
 
