@@ -6,21 +6,31 @@ const UserModel = require("../model/UserModel");
 const { getUserByEmail, getUserById } = require("../model/Auth");
 const { hashPassword, comparePassword } = require("../midlleware/hashing");
 const sendToMail = require("./../midlleware/sendemail");
+const { pool } = require("../config/pg");
 
 //======================================= Import ==========================================================
 
-//=========================================== Get All By Id Controller ==================================
+//=========================================== Get All User Controller ==================================
 const GetAllUserController = async (req, res) => {
   const id = req.payload.id;
-
   try {
-    const resultUserById = await UserModel.GetAllUserModel(id);
+    const resultRec = await pool.query("SELECT company_name FROM user_recruiter WHERE user_id=$1", [id])
+
+    if (resultRec) {
+      const resultUsers = await UserModel.GetAllUserModel();
+
+      return res.status(200).json({
+        status: "succes",
+        Message: "Success get all candidate",
+        Data: resultUsers.rows
+      });
+    } else {
+      return res.status(401).json({
+        status: "failed",
+        message: "Failed, you don't have any access"
+      })
+    }
     
-    return res.status(200).json({
-      status: "succes",
-      Message: "Success get by id",
-      Data: resultUserById.rows
-    });
   } catch (error) {
     return res.status(500).json({
       status: "Failed",

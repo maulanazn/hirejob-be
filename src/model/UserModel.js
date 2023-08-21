@@ -4,9 +4,9 @@ const { v4: uuidv4 } = require('uuid');
 //=================================================================== Modul Import ========================================
 
 // ================================================================== Get All User Kandidat ============================
-const GetAllUserModel = async (id) => {
+const GetAllUserModel = async () => {
   try {
-    const result = await pool.query('SELECT photo.photo_profile, users.name, candidate_profile.last_work, candidate_profile.province, candidate_profile.city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE users.id = $1', [id]);
+    const result = await pool.query('SELECT photo.photo_profile, users.name, candidate_profile.last_work, candidate_profile.province, candidate_profile.city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id');
 
     return result;
   } catch (error) {
