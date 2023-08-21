@@ -7,6 +7,7 @@ const BodataWorker = require('./route/BiodataWorkersRoute');
 const skillworkers = require('./route/skillWorkers');
 
 app.use(express.json());
+app.use(express.urlencoded())
 
 app.get('/', (req, res) => {
     res.send("HIREJOB REST API SERVER");
