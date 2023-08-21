@@ -25,7 +25,7 @@ const GetAllUserController = async (req, res) => {
 
   try {
     const resultUsers = await UserModel.GetAllUserModel(data);
-    
+
     return res.status(200).json({
       status: "succes",
       Message: "Success get all user",
