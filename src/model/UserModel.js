@@ -3,6 +3,15 @@ const { v4: uuidv4 } = require('uuid');
 
 //=================================================================== Modul Import ========================================
 
+// ================================================================== Get All User Kandidat ============================
+const GetAllUserModel = async () => {
+  try {
+    const result = await pool.query('SELECT')
+  } catch (error) {
+    
+  }
+}
+
 // ================================================================== Create New User Kandidat ============================
 
 const CreateUserModel = async (body) => {

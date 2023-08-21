@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const secretKey = "secretKey123";
+require('dotenv').config();
 
 const UserModel = require("../model/UserModel");
 const { getUserByEmail, getUserById } = require("../model/Auth");
@@ -7,6 +8,27 @@ const { hashPassword, comparePassword } = require("../midlleware/hashing");
 const sendToMail = require("./../midlleware/sendemail");
 
 //======================================= Import ==========================================================
+
+//=========================================== Get All By Id Controller ==================================
+const GetAllUserController = async (req, res) => {
+  const id = req.payload.id;
+
+  try {
+    const resultUserById = await getAllUserModel(id);
+    
+    return res.status(200).json({
+      status: "succes",
+      Message: "Success get by id",
+      Data: resultUserById.rows
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "Failed",
+      Message: "Failed get by id",
+      Data: error.message
+    });    
+  }
+}
 
 //=========================================== Get User By Id Controller ==================================
 const GetUserByIdController = async (req, res) => {
@@ -89,7 +111,7 @@ const CreateUserController = async (req, res) => {
     sendToMail(
       result.email,
       "Verify email",
-      `<h1><a href="https://lazy-teal-piranha-vest.cyclic.cloud/user/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
+      `<h1><a href="${process.env.EMAIL_URL}/user/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
     );
 
     console.log("rsult");

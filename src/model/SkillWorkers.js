@@ -13,12 +13,7 @@ const CreateSkill = async (payload, body) => {
 
     return result.rows[0];
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
-      message: error.message,
-    });
+    throw Error(error.message);
   }
 };
 //========================================= Update Skill User ============================
@@ -35,12 +30,7 @@ const UpdateSkill = async (body, user_id) => {
 
     return result.rows[0];
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
-      message: error.message,
-    });
+    throw Error(error.message);
   }
 };
 
