@@ -1,13 +1,20 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 const UserAuth = require('./route/UserRoute');
 const UserRecRoute = require('./route/UserRecRoute');
 const BodataWorker = require('./route/BiodataWorkersRoute');
 const skillworkers = require('./route/skillWorkers');
 
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 app.use(express.json());
-app.use(express.urlencoded())
+app.use(cors(corsOptions));
+app.use(express.urlencoded({extended: false}))
 
 app.get('/', (req, res) => {
     res.send("HIREJOB REST API SERVER");

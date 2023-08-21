@@ -1,7 +1,6 @@
 const { CreateBiodata, CreateUpdatePortofolio, GetProtofoliocontroller, CreateWorkEXPController, UpdateWorksEXPController, GetAllWorkEXPController, DeleteWorksEXP, CreateandUpdatePhotoControler } = require('../controller/BiodataWorkers');
 const { VertifikasiToken } = require('../midlleware/VertifikasiToken');
 const upload = require('../midlleware/MulterPhoto');
-// const {} = require('../controller/');
 
 const express = require('express');
 const routeWorkers = express.Router();

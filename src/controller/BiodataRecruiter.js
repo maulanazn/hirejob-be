@@ -73,7 +73,7 @@ const CreateandUpdatePhotoControler = async (req, res) => {
       let data = {
         user_id: payload.id,
         photo_profile: cloudPhotoRecProfile.url,
-        user_name: payload.name,
+        user_name: payload.company_name,
       };
       console.log('ini update');
       const CreateData = await CreatePhotoRecProfile(data);

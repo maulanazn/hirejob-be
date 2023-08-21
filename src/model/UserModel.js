@@ -4,11 +4,13 @@ const { v4: uuidv4 } = require('uuid');
 //=================================================================== Modul Import ========================================
 
 // ================================================================== Get All User Kandidat ============================
-const GetAllUserModel = async () => {
+const GetAllUserModel = async (id) => {
   try {
-    const result = await pool.query('SELECT')
+    const result = await pool.query('SELECT photo.photo_profile, users.name, candidate_profile.last_work, candidate_profile.province, candidate_profile.city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE users.id = $1', [id]);
+
+    return result;
   } catch (error) {
-    
+    throw Error(error.message);
   }
 }
 
@@ -26,12 +28,7 @@ const CreateUserModel = async (body) => {
 
     return result.rows[0];
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
-      message: error.message,
-    });
+    throw Error(error.message);
   }
 };
 
@@ -54,6 +51,7 @@ const ActivateUserModel = async (id) => {
 //================================================= Export ========================================================
 
 module.exports = {
+  GetAllUserModel,
   CreateUserModel,
   LoginModel,
   ActivateUserModel,

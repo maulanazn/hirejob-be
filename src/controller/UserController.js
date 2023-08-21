@@ -14,7 +14,7 @@ const GetAllUserController = async (req, res) => {
   const id = req.payload.id;
 
   try {
-    const resultUserById = await getAllUserModel(id);
+    const resultUserById = await UserModel.GetAllUserModel(id);
     
     return res.status(200).json({
       status: "succes",
@@ -230,6 +230,7 @@ const activateUserController = async (req, res) => {
 
 //========================================= Export Login ====================================
 module.exports = {
+  GetAllUserController,
   GetUserByIdController,
   CreateUserController,
   loginController,
