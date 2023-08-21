@@ -9,17 +9,52 @@ const sendToMail = require("./../midlleware/sendemail");
 
 //======================================= Import ==========================================================
 
-//=========================================== Get All By Id Controller ==================================
+//=========================================== Get All user Controller ==================================
 const GetAllUserController = async (req, res) => {
-  const id = req.payload.id;
+  const {sortBy, sort, offset, limit} = req.query;
+    
+  const pageSearched = offset || 1;
+  const limitation = limit || 5;
+
+  const data = {
+      sortBy: sortBy || 'name',
+      sort: sort || '',
+      offset: (pageSearched - 1) * limitation,
+      limit: limit || 10
+  }
 
   try {
-    const resultUserById = await UserModel.GetAllUserModel(id);
+    const resultUsers = await UserModel.GetAllUserModel(data);
     
     return res.status(200).json({
       status: "succes",
-      Message: "Success get by id",
-      Data: resultUserById.rows
+      Message: "Success get all user",
+      Data: resultUsers.rows
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "Failed",
+      Message: "Failed get by id",
+      Data: error.message
+    });    
+  }
+}
+
+//=========================================== SEarch All user Controller ==================================
+const SearchAllUserController = async (req, res) => {
+  const {search} = req.query;
+
+  const data = {
+    search: search || undefined
+  }
+
+  try {
+    const resultUserSearch = await UserModel.SearchAllUserModel(data);
+    
+    return res.status(200).json({
+      status: "succes",
+      Message: "Success get all user",
+      Data: resultUserSearch.rows
     });
   } catch (error) {
     return res.status(500).json({
@@ -231,6 +266,7 @@ const activateUserController = async (req, res) => {
 //========================================= Export Login ====================================
 module.exports = {
   GetAllUserController,
+  SearchAllUserController,
   GetUserByIdController,
   CreateUserController,
   loginController,
