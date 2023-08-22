@@ -6,7 +6,6 @@ const UserModel = require("../model/UserModel");
 const { getUserByEmail, getUserById } = require("../model/Auth");
 const { hashPassword, comparePassword } = require("../midlleware/hashing");
 const sendToMail = require("./../midlleware/sendemail");
-const { pool } = require("../config/pg");
 
 //======================================= Import ==========================================================
 
@@ -30,13 +29,13 @@ const GetAllUserController = async (req, res) => {
     return res.status(200).json({
       status: "succes",
       Message: "Success get all user",
-      Data: resultUsers.rows
+      data: resultUsers.rows
     });
   } catch (error) {
     return res.status(500).json({
       status: "Failed",
       Message: "Failed get by id",
-      Data: error.message
+      data: error.message
     });    
   }
 }
@@ -55,13 +54,13 @@ const SearchAllUserController = async (req, res) => {
     return res.status(200).json({
       status: "succes",
       Message: "Success get all user",
-      Data: resultUserSearch.rows
+      data: resultUserSearch.rows
     });
   } catch (error) {
     return res.status(500).json({
       status: "Failed",
       Message: "Failed get by id",
-      Data: error.message
+      data: error.message
     });    
   }
 }
@@ -76,13 +75,13 @@ const GetUserByIdController = async (req, res) => {
     return res.status(200).json({
       status: "succes",
       Message: "Success get by id",
-      Data: resultUserById.rows[0]
+      data: resultUserById.rows[0]
     });
   } catch (error) {
     return res.status(500).json({
       status: "Failed",
       Message: "Failed get by id",
-      Data: error.message
+      data: error.message
     });    
   }
 }
@@ -147,13 +146,11 @@ const CreateUserController = async (req, res) => {
     res.status(201).json({
       status: "succes",
       Message: "Your Create Data Success, please check your email",
-      error: false,
-      Data: result,
+      data: result,
     });
   } catch (error) {
     res.status(500).json({
-      status: "Error ",
-      message: "Bad Server ",
+      status: "Bad Server ",
       message: error.message,
     });
   }
@@ -194,7 +191,6 @@ const loginController = async (req, res) => {
     return res.status(401).json({
       status: "failed",
       message: " Your Password Authentication failed.",
-      data: null,
     });
   }
 

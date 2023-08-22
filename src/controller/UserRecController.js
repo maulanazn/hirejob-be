@@ -18,13 +18,13 @@ const GetUserRecByIdController = async (req, res) => {
     return res.status(200).json({
       status: "succes",
       Message: "Success get by id",
-      Data: resultUserRecById.rows,
+      data: resultUserRecById.rows,
     });
   } catch (error) {
     return res.status(500).json({
       status: "Failed",
       Message: "Failed get by id",
-      Data: error.message
+      data: error.message
     });    
   }
 }
@@ -89,7 +89,7 @@ const CreateUserRecController = async (req, res) => {
     return res.status(201).json({
       status: "succes",
       Message: "Your Create Data Success",
-      Data: result,
+      data: result,
     });
   } catch (error) {
     return res.status(500).json({

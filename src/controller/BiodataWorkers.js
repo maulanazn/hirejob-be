@@ -33,14 +33,12 @@ const CreateBiodata = async (req, res) => {
       return res.status(201).json({
         status: ' Succes',
         message: ' Update Your Biodata Succes',
-        error: false,
         data: data,
       });
     }
   } catch (error) {
     res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
+      status: 'Bad Server ',
       message: error.message,
     });
   }
@@ -74,8 +72,7 @@ const CreateUpdatePortofolio = async (req, res) => {
       return res.status(201).json({
         status: ' Succes ',
         message: ' Succes Create Portofolio',
-        error: false,
-        dataview: create,
+        data: create,
       });
     } else {
       const update = await Portofolio.UpdatePortofolio(data1, payload.id);
@@ -83,13 +80,12 @@ const CreateUpdatePortofolio = async (req, res) => {
         status: ' Succes ',
         message: ' Succes update Portofolio',
         error: false,
-        dataview: update,
+        data: update,
       });
     }
   } catch (error) {
     res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
+      status: 'Bad Server ',
       message: error.message,
     });
   }
@@ -107,8 +103,7 @@ const GetProtofoliocontroller = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
+      status: 'Bad Server ',
       message: error.message,
     });
   }
@@ -139,8 +134,7 @@ const CreateWorkEXPController = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      status: ' faild ',
-      message: ' Bad Server ',
+      status: ' Bad Server ',
       error: error.message,
     });
   }
