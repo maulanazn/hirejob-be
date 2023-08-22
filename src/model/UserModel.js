@@ -3,6 +3,15 @@ const { v4: uuidv4 } = require('uuid');
 
 //=================================================================== Modul Import ========================================
 
+// ================================= Get province and job
+const GetProvinceandJob = async (id) => {
+  try {
+    const result = await pool.query("SELECT work_experience.position, candidate_profile.city, candidate_profile.province FROM candidate_profile JOIN work_experience ON work_experience.user_id = candidate_profile.user_id WHERE candidate_profile.user_id = '9f415485-4629-415a-9e76-47c1fc08f181';")
+  } catch (error) {
+    
+  }
+}
+
 // ================================================================== Get All User Kandidat ============================
 const GetAllUserModel = async (data) => {
   try {

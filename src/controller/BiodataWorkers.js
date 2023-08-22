@@ -4,6 +4,26 @@ const cloudinary = require('../config/cloudinary');
 const Workexp = require('../model/WorkExperience');
 const PhotoProfile = require('../model/PhotoProfile');
 
+// ====== Get Biodata ===
+const GetBioPhoto = async (req, res) => {
+  const {id} = req.params;
+
+  try {
+    const result = await ModelProfil.GetBiodata(id);
+
+    return res.status(200).json({
+      status: 'Success',
+      message: "SUccess get Bio photo",
+      data: result.rows[0]
+    })
+  } catch (error) {
+    return res.status(400).json({
+      status: 'Failed',
+      message: "Failed get Bio photo",
+    })
+  }
+}
+
 //==================================== Create Biodata =======================================
 
 const CreateBiodata = async (req, res) => {
@@ -281,6 +301,7 @@ const GetPhotoWorkers = async (req, res) => {
 };
 
 module.exports = {
+  GetBioPhoto,
   CreateBiodata,
   CreateUpdatePortofolio,
   GetProtofoliocontroller,
