@@ -8,7 +8,6 @@ const { CreateBiodataRecruiter, CreateandUpdatePhotoControler } = require('../co
 const { GetAllUserController, SearchAllUserController } = require('../controller/UserController');
 
 route.get('/all-candidate', VertifikasiToken, GetAllUserController);
-route.get('/search-candidate', VertifikasiToken, SearchAllUserController);
 route.get('/in', VertifikasiToken, UserRecControllers.GetUserRecByIdController);
 route.post('/', UserRecControllers.CreateUserRecController);
 route.get('/verify/:id', UserRecControllers.activateUserRecController);

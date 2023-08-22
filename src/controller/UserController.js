@@ -11,7 +11,7 @@ const sendToMail = require("./../midlleware/sendemail");
 
 //=========================================== Get All user Controller ==================================
 const GetAllUserController = async (req, res) => {
-  const {sortBy, sort, offset, limit} = req.query;
+  const {search, sortBy, sort, offset, limit} = req.query;
     
   const pageSearched = offset || 1;
   const limitation = limit || 5;
@@ -22,6 +22,16 @@ const GetAllUserController = async (req, res) => {
       offset: (pageSearched - 1) * limitation,
       limit: limit || 10
   }
+  
+  if (search != undefined) {
+    const resultUserSearch = await UserModel.SearchAllUserModel(data);
+    
+    return res.status(200).json({
+      status: "succes",
+      Message: "Success get all user",
+      data: resultUserSearch.rows
+    });
+  }
 
   try {
     const resultUsers = await UserModel.GetAllUserModel(data);
@@ -30,31 +40,6 @@ const GetAllUserController = async (req, res) => {
       status: "succes",
       Message: "Success get all user",
       data: resultUsers.rows
-    });
-  } catch (error) {
-    return res.status(500).json({
-      status: "Failed",
-      Message: "Failed get by id",
-      data: error.message
-    });    
-  }
-}
-
-//=========================================== SEarch All user Controller ==================================
-const SearchAllUserController = async (req, res) => {
-  const {search} = req.query;
-
-  const data = {
-    search: search || undefined
-  }
-
-  try {
-    const resultUserSearch = await UserModel.SearchAllUserModel(data);
-    
-    return res.status(200).json({
-      status: "succes",
-      Message: "Success get all user",
-      data: resultUserSearch.rows
     });
   } catch (error) {
     return res.status(500).json({
@@ -253,7 +238,6 @@ const activateUserController = async (req, res) => {
 //========================================= Export Login ====================================
 module.exports = {
   GetAllUserController,
-  SearchAllUserController,
   GetUserByIdController,
   CreateUserController,
   loginController,

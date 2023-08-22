@@ -1,12 +1,13 @@
 {
     "sqltools.connections": [
+        {},
         {
             "previewLimit": 50,
             "server": "147.139.210.135",
             "port": 5432,
             "driver": "PostgreSQL",
-            "name": "hirejob_remote",
-            "group": "hirejob_app",
+            "name": "hirejob",
+            "group": "hirejob",
             "database": "kb01",
             "username": "kb01"
         }
