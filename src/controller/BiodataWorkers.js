@@ -6,7 +6,7 @@ const PhotoProfile = require('../model/PhotoProfile');
 
 // ====== Get Biodata ===
 const GetBioPhoto = async (req, res) => {
-  const {id} = req.params;
+  const id = req.payload.id;
 
   try {
     const result = await ModelProfil.GetBiodata(id);
