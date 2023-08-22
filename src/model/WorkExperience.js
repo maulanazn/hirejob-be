@@ -9,12 +9,11 @@ const CreateExperienceModel = async (body) => {
   try {
     const result = await pool.query(
       `INSERT INTO work_experience (user_name, position, company_name, working_start_at,working_end_at,description,user_id,id)
-                             VALUES ($1, $2, $3, $4, $5, $6, $7,$8)
-                             RETURNING user_name, position, company_name, working_start_at,working_end_at,description,user_id,created_at,id`,
+                             VALUES ($1, $2, $3, $4, $5, $6, $7,$8)`,
       [body.user_name, body.position, body.company_name, body.working_start_at, body.working_end_at, body.description, body.user_id, id]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
     console.log(error);
     throw error;
@@ -27,12 +26,11 @@ const UpdateExpModel = async (body, id) => {
     const result = await pool.query(
       `UPDATE work_experience
                  SET user_name = $1, position = $2, company_name = $3, working_start_at = $4, working_end_at = $5, description = $6, user_id = $7
-                 WHERE id = $8
-                 RETURNING user_name, position, created_at, working_end_at, user_id`,
+                 WHERE id = $8`,
       [body.user_name, body.position, body.company_name, body.working_start_at, body.working_end_at, body.description, body.user_id, id]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
     console.log(error);
     throw error;

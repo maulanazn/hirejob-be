@@ -7,12 +7,11 @@ const CreatePhotoProfile = async (body) => {
   try {
     const result = await pool.query(
       `INSERT INTO photo (user_id,photo_profile,user_name)
-                       VALUES ($1, $2, $3)
-                       RETURNING user_id,photo_profile,user_name`,
+                       VALUES ($1, $2, $3)`,
       [body.user_id, body.photo_profile, body.user_name]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
     throw Error(error.message);
   }
@@ -25,12 +24,11 @@ const UpdatePhotoProfil = async (body, user_id) => {
     const result = await pool.query(
       `UPDATE photo
                  SET photo_profile = $1
-                 WHERE user_id = $2
-                 RETURNING photo_profile`,
+                 WHERE user_id = $2`,
       [body.photo_profile, user_id]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
     throw Error(error.message);
   }

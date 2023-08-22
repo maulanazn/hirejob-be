@@ -21,7 +21,7 @@ const CreateProfileRecruiter = async (body) => {
       ]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
     throw Error(error.message);
   }
@@ -45,7 +45,7 @@ const UpdateProfileRecruiter = async (body, user_id) => {
       ]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
     throw Error(error.message);
   }

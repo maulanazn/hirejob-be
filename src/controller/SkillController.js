@@ -11,34 +11,26 @@ const CreateUpdateSkill = async (req, res) => {
     user_id: dataPayload.id,
   };
 
-  //   return console.log(payload);
   const body = req.body;
 
   try {
     const Vertifikasi = await ViewSkill(dataPayload.id);
-    // return console.log(Vertifikasi);
     if (!Vertifikasi.rows[0]) {
-      const create = await CreateSkill(payload, body);
+      await CreateSkill(payload, body);
       return res.status(201).json({
         status: ' Succes',
         message: ' Succes Create Skill',
-        error: false,
-        data: create,
       });
     } else {
-      const Update = await UpdateSkill(body, payload.user_id);
+      await UpdateSkill(body, payload.user_id);
       return res.status(201).json({
         status: ' Succes',
         message: ' Succes Update Skill',
-        error: false,
-        data: Update,
       });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
+    return res.status(500).json({
+      status: 'Bad Server ',
       message: error.message,
     });
   }
@@ -49,19 +41,17 @@ const ViewSkillController = async (req, res) => {
 
   try {
     const view = await ViewSkill(payload);
-    // console.log(view);
-    const data = view.rows[0].skill_name;
-    const datafix = data.split(' ');
-    console.log(datafix);
 
-    res.status(200).json({
+    return res.status(200).json({
       status: ' Succes ',
       message: 'View Data ',
-      error: false,
-      data: datafix,
+      data: view.rows[0],
     });
   } catch (error) {
-    console.log(error);
+    return res.status(500).json({
+      status: 'Bad Server ',
+      message: error.message,
+    });
   }
 };
 

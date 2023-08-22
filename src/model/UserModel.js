@@ -32,12 +32,11 @@ const CreateUserModel = async (body) => {
   try {
     const result = await pool.query(
       `INSERT INTO users (id, email, name, password, phone,position)
-                   VALUES ($1, $2, $3, $4, $5, $6)
-                   RETURNING id,email,name ,password, phone,position`,
+                   VALUES ($1, $2, $3, $4, $5, $6)`,
       [id, body.email, body.name, body.password, body.phone, body.position]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
     throw Error(error.message);
   }

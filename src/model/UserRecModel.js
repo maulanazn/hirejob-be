@@ -10,12 +10,11 @@ const CreateUserRecModel = async (body) => {
   try {
     const result = await pool.query(
       `INSERT INTO user_recruiter (id, email, name, password, phone,position, company_name)
-                   VALUES ($1, $2, $3, $4, $5, $6, $7)
-                   RETURNING id,email,name ,password, phone,position,company_name`,
+                   VALUES ($1, $2, $3, $4, $5, $6, $7)`,
       [id, body.email, body.name, body.password, body.phone, body.position, body.company_name]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
     console.log(error);
     res.status(500).json({

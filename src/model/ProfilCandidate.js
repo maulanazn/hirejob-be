@@ -8,19 +8,13 @@ const CreateProfilcontroller = async (body) => {
   try {
     const result = await pool.query(
       `INSERT INTO candidate_profile (user_name, province, city, last_work, description, user_id, id)
-                     VALUES ($1, $2, $3, $4, $5, $6, $7)
-                     RETURNING user_name, province, city, last_work, description, user_id, id`,
+                     VALUES ($1, $2, $3, $4, $5, $6, $7)`,
       [body.user_name, body.province, body.city, body.last_work, body.description, body.user_id, id]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
-      message: error.message,
-    });
+    throw Error(error.message);
   }
 };
 
@@ -31,19 +25,13 @@ const UpdateProfilcontroller = async (body, user_id) => {
     const result = await pool.query(
       `UPDATE candidate_profile
          SET user_name = $1, province = $2, city = $3, last_work = $4,description = $5
-         WHERE user_id = $6
-         RETURNING user_name, province, city, last_work, description,user_id, id`,
+         WHERE user_id = $6`,
       [body.user_name, body.province, body.city, body.last_work, body.description, user_id]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
-      message: error.message,
-    });
+    throw Error(error.message);
   }
 };
 

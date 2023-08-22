@@ -32,16 +32,12 @@ const GetUserRecByIdController = async (req, res) => {
 //=========================================== Create User Rec Controller ==================================
 
 const CreateUserRecController = async (req, res) => {
-  console.log("error");
   const { password, email } = req.body;
-  console.log("error");
-  console.log(req.body);
   // Panjang password
   if (password.length <= 8) {
     return res.status(409).json({
       status: " fail",
       message: "Password to Short",
-      error: true,
     });
   }
 
@@ -55,18 +51,15 @@ const CreateUserRecController = async (req, res) => {
       error: "Non-unique password.",
       message:
         "The password you entered is not unique. Please choose a password that has not been used before.",
-      error: true,
     });
   }
 
   // Vertifikasi Email
   let emailVertifikasi = await getUserRecByEmail(email);
-  console.log(emailVertifikasi);
   if (emailVertifikasi.rows[0]) {
     return res.status(409).json({
       status: " fail",
       message: "Email already exists.",
-      error: true,
     });
   }
 
@@ -93,16 +86,13 @@ const CreateUserRecController = async (req, res) => {
       `<h1><a href="https://lazy-teal-piranha-vest.cyclic.cloud/recruiter/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
     );
 
-    console.log("rsult");
-    console.log(result);
-    res.status(201).json({
+    return res.status(201).json({
       status: "succes",
       Message: "Your Create Data Success",
-      error: false,
       Data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "Error ",
       message: "Bad Server ",
       message: error.message,
@@ -116,13 +106,11 @@ const loginController = async (req, res) => {
   const { email, password } = req.body;
   // Validation Email
   let emailVertifikasi = await getUserRecByEmail(email);
-  console.log(emailVertifikasi);
   if (!emailVertifikasi.rows[0]) {
     return res.status(409).json({
       error: "Invalid email.",
       message:
         "The email address you entered is not valid. Please enter a valid email address.",
-      error: true,
     });
   }
 
@@ -146,31 +134,28 @@ const loginController = async (req, res) => {
     return res.status(401).json({
       status: "failed",
       message: " Your Password Authentication failed.",
-      error: true,
       data: null,
     });
   }
 
   // Payload
   const token = emailVertifikasi.rows[0];
-  console.log(token);
   const payload = {
     id: token.id,
     name: token.name,
     email: token.email,
   };
 
-  const token1 = jwt.sign(payload, secretKey, { expiresIn: "100s" });
+  const token1 = jwt.sign(payload, secretKey, { expiresIn: "1d" });
 
   try {
-    res.status(201).json({
+    return res.status(201).json({
       status: "Succes",
       message: " Login Succes",
-      error: false,
       data: token1,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "Bad Request",
       message: error.message,
     });

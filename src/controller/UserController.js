@@ -76,7 +76,7 @@ const GetUserByIdController = async (req, res) => {
     return res.status(200).json({
       status: "succes",
       Message: "Success get by id",
-      Data: resultUserById.rows
+      Data: resultUserById.rows[0]
     });
   } catch (error) {
     return res.status(500).json({
@@ -90,16 +90,12 @@ const GetUserByIdController = async (req, res) => {
 //=========================================== Create User Controller ==================================
 
 const CreateUserController = async (req, res) => {
-  console.log("error");
   const { password, email } = req.body;
-  console.log("error");
-  console.log(req.body);
   // Panjang password
   if (password.length <= 8) {
     return res.status(409).json({
       status: " fail",
       message: "Password to Short",
-      error: true,
     });
   }
 
@@ -113,7 +109,6 @@ const CreateUserController = async (req, res) => {
       error: "Non-unique password.",
       message:
         "The password you entered is not unique. Please choose a password that has not been used before.",
-      error: true,
     });
   }
 
@@ -124,7 +119,6 @@ const CreateUserController = async (req, res) => {
     return res.status(409).json({
       status: " fail",
       message: "Email already exists.",
-      error: true,
     });
   }
 
@@ -150,8 +144,6 @@ const CreateUserController = async (req, res) => {
       `<h1><a href="${process.env.EMAIL_URL}/user/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
     );
 
-    console.log("rsult");
-    console.log(result);
     res.status(201).json({
       status: "succes",
       Message: "Your Create Data Success, please check your email",
@@ -202,7 +194,6 @@ const loginController = async (req, res) => {
     return res.status(401).json({
       status: "failed",
       message: " Your Password Authentication failed.",
-      error: true,
       data: null,
     });
   }
@@ -216,13 +207,12 @@ const loginController = async (req, res) => {
     // email: token.email,
   };
 
-  const token1 = jwt.sign(payload, secretKey, { expiresIn: '10000s' });
+  const token1 = jwt.sign(payload, secretKey, { expiresIn: '1d' });
 
   try {
     res.status(201).json({
       status: "Succes",
       message: " Login Succes",
-      error: false,
       data: token1,
     });
   } catch (error) {

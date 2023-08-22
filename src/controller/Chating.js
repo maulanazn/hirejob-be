@@ -109,20 +109,16 @@ const ShowFromchatting = async (req, res) => {
         message: ' Show All Chat ',
         data: user,
       });
-      console.log('chat');
-      console.log(user);
     } else {
-      const rect = await ChatingModels.ViewFromValidasirect(payload);
-      console.log('ini rect');
-      console.log(rect);
+      const rec = await ChatingModels.ViewFromValidasirect(payload);
+
       return res.status(200).json({
         status: 'Succes',
         message: ' Show All Chat ',
-        data: rect.rows,
+        data: rec.rows,
       });
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       status: 'Error ',
       message: 'Bad Server ',

@@ -8,10 +8,7 @@ const PhotoProfile = require('../model/PhotoProfile');
 
 const CreateBiodata = async (req, res) => {
   const { user_name, province, city, last_work, description } = req.body;
-  const body = req.body;
   const payload = req.payload.id;
-  console.log('ini error');
-  console.log(payload);
 
   let CreateData = {
     user_name,
@@ -24,17 +21,14 @@ const CreateBiodata = async (req, res) => {
 
   try {
     const Vertifikasi = await ModelProfil.GetBiodata(payload);
-    console.log('a');
     if (!Vertifikasi.rows[0]) {
       let data = await ModelProfil.CreateProfilcontroller(CreateData);
       return res.status(201).json({
         status: ' Succes',
         message: ' Succes Create Data',
-        error: false,
         data: data,
       });
     } else {
-      console.log('error');
       let data = await ModelProfil.UpdateProfilcontroller(CreateData, payload);
       return res.status(201).json({
         status: ' Succes',
@@ -54,24 +48,17 @@ const CreateBiodata = async (req, res) => {
 // ======================= Create AND Update  Portofolio =====================================================
 const CreateUpdatePortofolio = async (req, res) => {
   const payload = req.payload;
-  console.log(payload);
-  const { user_name, repository_link, app_type, photo, created_at } = req.body;
+  const { user_name, repository_link, app_type, photo } = req.body;
   const cloudphotoProfil = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
-  console.log(cloudphotoProfil);
   const url = cloudphotoProfil.url;
-  console.log(url);
-  console.log('ini data Setelah CLoud');
 
   let data = {
     user_name,
     repository_link,
     app_type,
-    photo: url,
-
+    photo: photo.url,
     user_id: payload.id,
   };
-  console.log('data');
-  console.log(data);
 
   let data1 = {
     user_name,
@@ -82,11 +69,8 @@ const CreateUpdatePortofolio = async (req, res) => {
 
   try {
     const Validasi = await Portofolio.Validasi(payload.id);
-    console.log(Validasi);
     if (!Validasi.rows[0]) {
-      console.log('ini error');
       const create = await Portofolio.CreatePortofolio(data);
-      console.log(create);
       return res.status(201).json({
         status: ' Succes ',
         message: ' Succes Create Portofolio',
@@ -103,7 +87,6 @@ const CreateUpdatePortofolio = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       status: 'Error ',
       message: 'Bad Server ',
@@ -114,19 +97,15 @@ const CreateUpdatePortofolio = async (req, res) => {
 // ======================= Get Portofolio =====================================================
 const GetProtofoliocontroller = async (req, res) => {
   const payload = req.payload.id;
-  console.log(payload);
 
   try {
     const data = await Portofolio.Validasi(payload);
-    console.log(data);
     res.status(200).json({
       status: ' Succes',
       message: ' View Your Portfolio',
-      error: false,
       data: data.rows[0],
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       status: 'Error ',
       message: 'Bad Server ',
@@ -156,21 +135,15 @@ const CreateWorkEXPController = async (req, res) => {
     res.status(201).json({
       status: ' Succes ',
       message: ' Create Data Succes',
-      error: false,
       data: dataCreate,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       status: ' faild ',
       message: ' Bad Server ',
       error: error.message,
     });
   }
-
-  // console.log(error);
-
-  // return console.log(data);
 };
 
 //=========================== Update Work EXP ================================================
@@ -194,11 +167,9 @@ const UpdateWorksEXPController = async (req, res) => {
     res.status(201).json({
       status: 'Succes',
       message: ' Succes Update Data',
-      error: false,
       data: Updatedata,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       status: ' Error ',
       message: ' Bad Server',
@@ -217,11 +188,9 @@ const GetAllWorkEXPController = async (req, res) => {
     res.status(200).json({
       status: ' Succes ',
       message: ' View All Data Exp',
-      error: false,
       data: GetallData.rows,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       Status: ' error ',
       message: ' Bad Server',
@@ -240,10 +209,8 @@ const DeleteWorksEXP = async (req, res) => {
     res.status(200).json({
       status: ' Succes ',
       message: 'Delete Your Exp Succes ',
-      error: false,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       Status: ' error ',
       message: ' Bad Server',
@@ -258,9 +225,7 @@ const CreateandUpdatePhotoControler = async (req, res) => {
   const payload = req.payload;
 
   try {
-    console.log('ini validasi');
     const validasi = await PhotoProfile.VertifikasiPhoto(payload.id);
-    console.log(validasi);
     if (!validasi.rows[0]) {
       const cloudphotoProfil = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
       let data = {
@@ -283,7 +248,6 @@ const CreateandUpdatePhotoControler = async (req, res) => {
       let data = {
         photo_profile: cloudphotoProfil.url,
       };
-      console.log('ini update');
       const UpdatedataPhoto = await PhotoProfile.UpdatePhotoProfil(data, payload.id);
       return res.status(201).json({
         status: 'succes',

@@ -5,13 +5,11 @@ const { pool } = require('../config/pg');
 const CreateSkill = async (payload, body) => {
   try {
     const result = await pool.query(
-      `INSERT INTO skill (user_name,skill_name, user_id)
-                         VALUES ($1, $2, $3)
-                         RETURNING user_name,skill_name, user_id`,
+      `INSERT INTO skill (user_name,skill_name, user_id) VALUES ($1, $2, $3)`,
       [payload.user_name, body.skill_name, payload.user_id]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
     throw Error(error.message);
   }
@@ -23,12 +21,11 @@ const UpdateSkill = async (body, user_id) => {
     const result = await pool.query(
       `UPDATE skill
                SET skill_name = $1
-               WHERE user_id = $2
-               RETURNING user_name, skill_name, user_id`,
+               WHERE user_id = $2`,
       [body.skill_name, user_id]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
     throw Error(error.message);
   }

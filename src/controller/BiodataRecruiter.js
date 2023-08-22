@@ -65,9 +65,7 @@ const CreateandUpdatePhotoControler = async (req, res) => {
   const payload = req.payload;
 
   try {
-    console.log('ini validasi');
     const validasi = await VertifikasiPhotoRec(payload.id);
-    console.log(validasi);
     if (!validasi.rows[0]) {
       const cloudPhotoRecProfile = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
       let data = {
@@ -75,12 +73,10 @@ const CreateandUpdatePhotoControler = async (req, res) => {
         photo_profile: cloudPhotoRecProfile.url,
         user_name: payload.name,
       };
-      console.log('ini update');
       const CreateData = await CreatePhotoRecProfile(data);
       return res.status(201).json({
         status: 'succes',
         message: ' Succes Create photo',
-        error: false,
         data: CreateData,
       });
     } else {
@@ -95,7 +91,6 @@ const CreateandUpdatePhotoControler = async (req, res) => {
       return res.status(201).json({
         status: 'succes',
         message: ' Succes Update photo',
-        error: false,
         data: UpdatedataPhoto,
       });
     }

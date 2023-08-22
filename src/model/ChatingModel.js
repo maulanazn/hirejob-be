@@ -9,19 +9,13 @@ const FromChattingModel = async (body) => {
   try {
     const result = await pool.query(
       `INSERT INTO form_message (id, user_id, user_name, recruiter_id, recruiter_name)
-                         VALUES ($1, $2, $3, $4, $5)
-                         RETURNING id, user_id, user_name, recruiter_id, recruiter_name`,
+                         VALUES ($1, $2, $3, $4, $5)`,
       [id, body.user_id, body.user_name, body.recruiter_id, body.recruiter_name]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
-    console.log(error);
-    // res.status(500).json({
-    //   status: 'Error ',
-    //   message: 'Bad Server ',
-    //   message: error.message,
-    // });
+    throw Error(error.message);
   }
 };
 
@@ -34,19 +28,13 @@ const CreateChatting = async (body) => {
   try {
     const result = await pool.query(
       `INSERT INTO messages (id, form_message_id , sender_id, user_name, message_detail)
-                           VALUES ($1, $2, $3, $4, $5)
-                           RETURNING id, form_message_id , sender_id, user_name, position,message_detail`,
+                           VALUES ($1, $2, $3, $4, $5)`,
       [id, body.id_chat, body.id_pengirim, body.name, body.message_detail]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
-    console.log(error);
-    // res.status(500).json({
-    //   status: 'Error ',
-    //   message: 'Bad Server ',
-    //   message: error.message,
-    // });
+    throw Error(error.message);
   }
 };
 
@@ -57,19 +45,13 @@ const CreateChattingnext = async (body) => {
   try {
     const result = await pool.query(
       `INSERT INTO messages (id, form_message_id , sender_id, user_name, position, message_detail)
-                           VALUES ($1, $2, $3, $4, $5, $6)
-                           RETURNING id, form_message_id , sender_id, user_name, position,message_detail`,
+                           VALUES ($1, $2, $3, $4, $5, $6)`,
       [id, body.id_chat, body.id_pengirim, body.name, body.position, body.message_detail]
     );
 
-    return result.rows[0];
+    return result;
   } catch (error) {
-    console.log(error);
-    // res.status(500).json({
-    //   status: 'Error ',
-    //   message: 'Bad Server ',
-    //   message: error.message,
-    // });
+    throw Error(error.message);
   }
 };
 
@@ -114,7 +96,7 @@ const ViewFromValidasi = async (user_id) => {
 
     return pool.query(Query, value);
   } catch (error) {
-    console.log(error);
+    throw Error(error.message);
   }
 };
 
@@ -124,7 +106,9 @@ const ViewFromValidasirect = async (recruiter_id) => {
     const value = [recruiter_id];
 
     return pool.query(Query, value);
-  } catch (error) {}
+  } catch (error) {
+    throw Error(error.message);
+  }
 };
 
 module.exports = {
