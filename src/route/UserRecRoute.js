@@ -5,9 +5,10 @@ const upload = require('./../midlleware/MulterPhoto');
 
 const UserRecControllers = require('../controller/UserRecController');
 const { CreateBiodataRecruiter, CreateandUpdatePhotoControler } = require('../controller/BiodataRecruiter');
-const { GetAllUserController } = require('../controller/UserController');
+const { GetAllUserController, SearchAllUserController } = require('../controller/UserController');
 
 route.get('/all-candidate', VertifikasiToken, GetAllUserController);
+route.get('/search-candidate', VertifikasiToken, SearchAllUserController);
 route.get('/in', VertifikasiToken, UserRecControllers.GetUserRecByIdController);
 route.post('/', UserRecControllers.CreateUserRecController);
 route.get('/verify/:id', UserRecControllers.activateUserRecController);

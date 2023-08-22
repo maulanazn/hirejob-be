@@ -4,9 +4,20 @@ const { v4: uuidv4 } = require('uuid');
 //=================================================================== Modul Import ========================================
 
 // ================================================================== Get All User Kandidat ============================
-const GetAllUserModel = async () => {
+const GetAllUserModel = async (data) => {
   try {
-    const result = await pool.query('SELECT photo.photo_profile, users.name, candidate_profile.last_work, candidate_profile.province, candidate_profile.city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id');
+    const result = await pool.query(`SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE ${data.sortBy} ILIKE '%${data.sort}%' OFFSET ${data.offset} LIMIT ${data.limit}`);
+
+    return result;
+  } catch (error) {
+    throw Error(error.message);
+  }
+}
+
+// ================================================================== Search All User Kandidat ============================
+const SearchAllUserModel = async (data) => {
+  try {
+    const result = await pool.query(`SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE name ILIKE '%${data.search}%' UNION SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE last_work ILIKE '%${data.search}%' UNION SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE province ILIKE '%${data.search}%' UNION SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE city ILIKE '%${data.search}%'`);
 
     return result;
   } catch (error) {
@@ -52,6 +63,7 @@ const ActivateUserModel = async (id) => {
 
 module.exports = {
   GetAllUserModel,
+  SearchAllUserModel,
   CreateUserModel,
   LoginModel,
   ActivateUserModel,
