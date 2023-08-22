@@ -1,4 +1,14 @@
-const { CreateBiodata, CreateUpdatePortofolio, GetProtofoliocontroller, CreateWorkEXPController, UpdateWorksEXPController, GetAllWorkEXPController, DeleteWorksEXP, CreateandUpdatePhotoControler } = require('../controller/BiodataWorkers');
+const {
+  GetPhotoWorkers,
+  CreateBiodata,
+  CreateUpdatePortofolio,
+  GetProtofoliocontroller,
+  CreateWorkEXPController,
+  UpdateWorksEXPController,
+  GetAllWorkEXPController,
+  DeleteWorksEXP,
+  CreateandUpdatePhotoControler,
+} = require('../controller/BiodataWorkers');
 const { VertifikasiToken } = require('../midlleware/VertifikasiToken');
 const upload = require('../midlleware/MulterPhoto');
 
@@ -6,6 +16,7 @@ const express = require('express');
 const routeWorkers = express.Router();
 
 routeWorkers.post('/', VertifikasiToken, CreateBiodata);
+routeWorkers.get('/photo/profil/', VertifikasiToken, GetPhotoWorkers);
 routeWorkers.get('/', VertifikasiToken, GetProtofoliocontroller); // GET Portofolio
 routeWorkers.post('/portofolio', VertifikasiToken, upload.single('photo'), CreateUpdatePortofolio); // FOR PORTOFOLIO
 routeWorkers.post('/workexp', VertifikasiToken, CreateWorkEXPController); // Create Worker EXP

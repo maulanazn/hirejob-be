@@ -251,7 +251,28 @@ const CreateandUpdatePhotoControler = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(201).json({
+    res.status(500).json({
+      status: 'Faild',
+      message: ' Bad Server',
+      error: error.message,
+    });
+  }
+};
+
+// ==================================================== Get Photo Profil Worker=======================
+
+const GetPhotoWorkers = async (req, res) => {
+  const payload = req.payload.id;
+
+  try {
+    const photo = await PhotoProfile.VertifikasiPhoto(payload);
+    res.status(200).json({
+      status: 'Succes',
+      message: ' View Photo Profil',
+      data: photo.rows[0],
+    });
+  } catch (error) {
+    res.status(500).json({
       status: 'Faild',
       message: ' Bad Server',
       error: error.message,
@@ -268,4 +289,5 @@ module.exports = {
   GetAllWorkEXPController,
   DeleteWorksEXP,
   CreateandUpdatePhotoControler,
+  GetPhotoWorkers,
 };
