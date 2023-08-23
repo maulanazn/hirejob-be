@@ -66,12 +66,12 @@ const CreateBiodata = async (req, res) => {
 // ======================= Create AND Update  Portofolio =====================================================
 const CreateUpdatePortofolio = async (req, res) => {
   const payload = req.payload;
-  const { user_name, repository_link, app_type, photo } = req.body;
+  const { portfolio_name, repository_link, app_type, photo } = req.body;
   const cloudphotoProfil = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
   const url = cloudphotoProfil.url;
 
   let data = {
-    user_name,
+    portfolio_name,
     repository_link,
     app_type,
     photo: photo.url,
@@ -79,7 +79,7 @@ const CreateUpdatePortofolio = async (req, res) => {
   };
 
   let data1 = {
-    user_name,
+    portfolio_name,
     repository_link,
     app_type,
     photo: url,
