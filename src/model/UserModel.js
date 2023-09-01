@@ -1,21 +1,10 @@
 const { pool } = require('../config/pg');
 const { v4: uuidv4 } = require('uuid');
 
-//=================================================================== Modul Import ========================================
-
-// ================================= Get province and job
-const GetProvinceandJob = async (id) => {
-  try {
-    const result = await pool.query("SELECT work_experience.position, candidate_profile.city, candidate_profile.province FROM candidate_profile JOIN work_experience ON work_experience.user_id = candidate_profile.user_id WHERE candidate_profile.user_id = '9f415485-4629-415a-9e76-47c1fc08f181';")
-  } catch (error) {
-    
-  }
-}
-
 // ================================================================== Get All User Kandidat ============================
 const GetAllUserModel = async (data) => {
   try {
-    const result = await pool.query(`SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE ${data.sortBy} ILIKE '%${data.sort}%' OFFSET ${data.offset} LIMIT ${data.limit}`);
+    const result = await pool.query(`SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE ${data.sortBy} ILIKE '%${data.sort}%' OFFSET ${data.offset} LIMIT ${data.limit}`);
 
     return result;
   } catch (error) {
@@ -26,7 +15,7 @@ const GetAllUserModel = async (data) => {
 // ================================================================== Search All User Kandidat ============================
 const SearchAllUserModel = async (data) => {
   try {
-    const result = await pool.query(`SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE name ILIKE '%${data.search}%' UNION SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE last_work ILIKE '%${data.search}%' UNION SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE province ILIKE '%${data.search}%' UNION SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id WHERE city ILIKE '%${data.search}%'`);
+    const result = await pool.query(`SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE name ILIKE '%${data.search}%' UNION SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE last_work ILIKE '%${data.search}%' UNION SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE province ILIKE '%${data.search}%' UNION SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE city ILIKE '%${data.search}%'`);
 
     return result;
   } catch (error) {

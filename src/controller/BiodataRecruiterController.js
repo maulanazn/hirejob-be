@@ -1,4 +1,3 @@
-const { CreatePhotoRecProfile, VertifikasiPhotoRec, UpdatePhotoRecProfil } = require("../model/PhotoRecProfile");
 const cloudinary = require('../config/cloudinary');
 const {
   CreateProfileRecruiter,
@@ -19,9 +18,11 @@ const CreateBiodataRecruiter = async (req, res) => {
     linkedin_url
   } = req.body;
   const user_id = req.payload.id;
-
+  let photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
+  
   let CreateData = {
     user_id: user_id,
+    photo,
     company_name,
     company_field,
     province,
@@ -32,11 +33,12 @@ const CreateBiodataRecruiter = async (req, res) => {
     company_phone,
     linkedin_url
   };
-
+  
   try {
     const verifyBioRec = await GetProfileRecruiter(user_id);
     if (!verifyBioRec.rows[0]) {
       let createBioRec = await CreateProfileRecruiter(CreateData);
+
       return res.status(201).json({
         status: ' Succes',
         message: ' Succes Create Data',
@@ -59,51 +61,6 @@ const CreateBiodataRecruiter = async (req, res) => {
   }
 };
 
-// =================================================== Create and Update Photo Profile ====================================
-
-const CreateandUpdatePhotoControler = async (req, res) => {
-  const payload = req.payload;
-
-  try {
-    const validasi = await VertifikasiPhotoRec(payload.id);
-    if (!validasi.rows[0]) {
-      const cloudPhotoRecProfile = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
-      let data = {
-        user_id: payload.id,
-        photo_profile: cloudPhotoRecProfile.url,
-        user_name: payload.name,
-      };
-      const CreateData = await CreatePhotoRecProfile(data);
-      return res.status(201).json({
-        status: 'succes',
-        message: ' Succes Create photo',
-        data: CreateData,
-      });
-    } else {
-      await cloudinary.uploader.destroy(req.file.path);
-      const cloudPhotoRecProfile = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
-
-      let data = {
-        photo_profile: cloudPhotoRecProfile.url,
-      };
-
-      const UpdatedataPhoto = await UpdatePhotoRecProfil(data, payload.id);
-      return res.status(201).json({
-        status: 'succes',
-        message: ' Succes Update photo',
-        data: UpdatedataPhoto,
-      });
-    }
-  } catch (error) {
-    res.status(201).json({
-      status: 'Faild',
-      message: ' Bad Server',
-      error: error.message,
-    });
-  }
-};
-
 module.exports = {
   CreateBiodataRecruiter, 
-  CreateandUpdatePhotoControler
 };

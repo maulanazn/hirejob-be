@@ -29,8 +29,10 @@ const GetBioPhoto = async (req, res) => {
 const CreateBiodata = async (req, res) => {
   const { user_name, province, city, last_work, description } = req.body;
   const payload = req.payload.id;
+  let photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
 
   let CreateData = {
+    photo,
     user_name,
     province,
     city,
@@ -110,6 +112,7 @@ const CreateUpdatePortofolio = async (req, res) => {
     });
   }
 };
+
 // ======================= Get Portofolio =====================================================
 const GetProtofoliocontroller = async (req, res) => {
   const payload = req.payload.id;
@@ -233,73 +236,6 @@ const DeleteWorksEXP = async (req, res) => {
   }
 };
 
-// =================================================== Create and Update Photo Profile ====================================
-
-const CreateandUpdatePhotoControler = async (req, res) => {
-  const payload = req.payload;
-
-  try {
-    const validasi = await PhotoProfile.VertifikasiPhoto(payload.id);
-    if (!validasi.rows[0]) {
-      const cloudphotoProfil = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
-      let data = {
-        user_id: payload.id,
-        photo_profile: cloudphotoProfil.url,
-        user_name: payload.name,
-      };
-      console.log('ini update');
-      const CreateData = await PhotoProfile.CreatePhotoProfile(data);
-      return res.status(201).json({
-        status: 'succes',
-        message: ' Succes Create photo',
-        error: false,
-        data: CreateData,
-      });
-    } else {
-      await cloudinary.uploader.destroy(req.file.path);
-      const cloudphotoProfil = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
-
-      let data = {
-        photo_profile: cloudphotoProfil.url,
-      };
-      const UpdatedataPhoto = await PhotoProfile.UpdatePhotoProfil(data, payload.id);
-      return res.status(201).json({
-        status: 'succes',
-        message: ' Succes Update photo',
-        error: false,
-        data: UpdatedataPhoto,
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      status: 'Faild',
-      message: ' Bad Server',
-      error: error.message,
-    });
-  }
-};
-
-// ==================================================== Get Photo Profil Worker=======================
-
-const GetPhotoWorkers = async (req, res) => {
-  const payload = req.payload.id;
-
-  try {
-    const photo = await PhotoProfile.VertifikasiPhoto(payload);
-    res.status(200).json({
-      status: 'Succes',
-      message: ' View Photo Profil',
-      data: photo.rows[0],
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: 'Faild',
-      message: ' Bad Server',
-      error: error.message,
-    });
-  }
-};
-
 module.exports = {
   GetBioPhoto,
   CreateBiodata,
@@ -309,6 +245,4 @@ module.exports = {
   UpdateWorksEXPController,
   GetAllWorkEXPController,
   DeleteWorksEXP,
-  CreateandUpdatePhotoControler,
-  GetPhotoWorkers,
 };

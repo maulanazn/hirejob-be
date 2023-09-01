@@ -5,10 +5,11 @@ const CreateProfileRecruiter = async (body) => {
   const id = uuid();
   try {
     const result = await pool.query(
-      "INSERT INTO recruiter_profile (id, user_id, company_name, company_field, province, city, company_info, email, company_email, company_phone, linkedin_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING company_name, company_field, province, city, company_info, email, company_email, company_phone, linkedin_url",
+      "INSERT INTO recruiter_profile (id, user_id, photo, company_name, company_field, province, city, company_info, email, company_email, company_phone, linkedin_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);",
       [
         id,
         body.user_id,
+        body.photo,
         body.company_name,
         body.company_field,
         body.province,
@@ -30,8 +31,9 @@ const CreateProfileRecruiter = async (body) => {
 const UpdateProfileRecruiter = async (body, user_id) => {
   try {
     const result = await pool.query(
-      "UPDATE recruiter_profile SET company_name=$1, company_field=$2, province=$3, city=$4, company_info=$5, email=$6, company_email=$7, company_phone=$8, linkedin_url=$9 WHERE user_id=$10 RETURNING company_name, company_field, province, city, company_info, email, company_email, company_phone, linkedin_url",
+      "UPDATE recruiter_profile SET photo=$1, company_name=$2, company_field=$3, province=$4, city=$5, company_info=$6, email=$7, company_email=$8, company_phone=$9, linkedin_url=$10 WHERE user_id=$11",
       [
+        body.photo,
         body.company_name,
         body.company_field,
         body.province,

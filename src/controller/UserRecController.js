@@ -6,8 +6,6 @@ const { getUserRecByEmail, getUserRecById } = require("../model/Auth");
 const { hashPassword, comparePassword } = require("../midlleware/hashing");
 const sendToMail = require("./../midlleware/sendemail");
 
-//======================================= Import ==========================================================
-
 //=========================================== Get User By Id Controller ==================================
 const GetUserRecByIdController = async (req, res) => {
   const id = req.payload.id;

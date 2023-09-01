@@ -1,8 +1,6 @@
 const { pool } = require('../config/pg');
 const { v4: uuidv4 } = require('uuid');
 
-//=================================================================== Modul Import ========================================
-
 // ================================================================== Create New User Kandidat ============================
 
 const CreateUserRecModel = async (body) => {
@@ -16,12 +14,7 @@ const CreateUserRecModel = async (body) => {
 
     return result;
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
-      message: error.message,
-    });
+    throw Error(error.message);
   }
 };
 
