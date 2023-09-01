@@ -1,5 +1,5 @@
 const { CreatePhotoRecProfile, VertifikasiPhotoRec, UpdatePhotoRecProfil } = require("../model/PhotoRecProfile");
-const cloudinary = require('./../config/cloudinary');
+const cloudinary = require('../config/cloudinary');
 const {
   CreateProfileRecruiter,
   GetProfileRecruiter,

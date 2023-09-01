@@ -1,5 +1,5 @@
 const uuid = require("uuid").v4;
-const { pool } = require("./../config/pg");
+const { pool } = require("../config/pg");
 
 const CreateProfileRecruiter = async (body) => {
   const id = uuid();

@@ -1,0 +1,111 @@
+@startuml WhiteSmoke
+
+entity users {
+    id VARCHAR <<PK>>
+    ---
+    email VARCHAR
+    name VARCHAR
+    password VARCHAR
+    phone VARCHAR
+    position VARCHAR
+}
+
+entity user_recruiter {
+    id VARCHAR(150) PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    company_name VARCHAR(255),
+    position VARCHAR(100),
+    phone VARCHAR(20) UNIQUE,
+    password VARCHAR(255),
+    verified BOOLEAN DEFAULT false
+};
+
+entity recruiter_profile {
+    id VARCHAR PRIMARY KEY,
+    photo VARCHAR,
+    company_name VARCHAR(170),
+    company_email VARCHAR(170),
+    company_phone VARCHAR(90),
+    company_field VARCHAR(170),
+    company_info TEXT,
+    province VARCHAR(50),
+    city VARCHAR(50),
+    user_id VARCHAR(100) UNIQUE,
+    email VARCHAR UNIQUE
+};
+
+entity candidate_profile {
+    id VARCHAR PRIMARY KEY,
+    user_name VARCHAR(200),
+    photo VARCHAR,
+    province VARCHAR(50),
+    city VARCHAR(50),
+    last_work VARCHAR(255),
+    description TEXT,
+    user_id VARCHAR(100) UNIQUE
+};
+
+entity social_media {
+    id VARCHAR PRIMARY KEY,
+    user_id VARCHAR <<FK>>
+    social_media_name VARCHAR
+    link VARCHAR
+}
+
+entity Skill {
+    user_name <<FK>>
+    ---
+    skill_name VARCHAR
+}
+
+entity workExperience {
+    user_name <<FK>>
+    ---
+    position VARCHAR
+    company_name VARCHAR
+    working_start_at DATE
+    working_end_at DATE
+    description TEXT
+    created_at DATE
+}
+
+entity Portfolio {
+    user_name <<FK>>
+    ---
+    repository_link VARCHAR
+    app_type ENUM('mobile', 'web', 'game')
+    photo VARCHAR
+    created_at DATE
+}
+
+entity FormMessage {
+    id VARCHAR <<PK>>
+    ---
+    user_id VARCHAR <<FK>>
+    position VARCHAR
+    user_name VARCHAR
+    recruiter_id VARCHAR
+    recruiter_name VARCHAR
+}
+
+entity Messages {
+    id VARCHAR <<PK>>
+    ---
+    form_message_id VARCHAR <<FK>>
+    sender_id VARCHAR
+    user_name VARCHAR
+}
+
+users ||--|| candidate_profile
+users ||--|| recruiterUser
+
+candidate_profile ||--|{ Skill
+candidate_profile ||--|{ workExperience
+candidate_profile ||--|{ Portfolio
+candidate_profile }|--|| Messages
+
+recruiterUser }|--|| candidate_profile
+recruiterUser }|--|| Messages
+
+@enduml
