@@ -1,2 +1,3 @@
+node_modules/
+tabledata/
 .env
-node_modules
