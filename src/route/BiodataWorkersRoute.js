@@ -14,7 +14,6 @@ const upload = require('../midlleware/MulterPhoto');
 const express = require('express');
 const route = express.Router();
 
-route.get('/bio/photo/:id', VertifikasiToken, GetBioPhoto);
 route.post('/', VertifikasiToken, CreateBiodata);
 route.get('/', VertifikasiToken, GetProtofoliocontroller); // GET Portofolio
 route.post('/portofolio', VertifikasiToken, upload.single('photo'), CreateUpdatePortofolio); // FOR PORTOFOLIO

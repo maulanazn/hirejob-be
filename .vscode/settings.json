@@ -1,6 +1,5 @@
 {
     "sqltools.connections": [
-        {},
         {
             "previewLimit": 50,
             "server": "147.139.210.135",
