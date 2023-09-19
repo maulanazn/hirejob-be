@@ -5,7 +5,6 @@ const cors = require('cors');
 const UserRoute = require('./route/UserRoute');
 const UserRecRoute = require('./route/UserRecRoute');
 const BioCandRoute = require('./route/BiodataWorkersRoute');
-const skillworkers = require('./route/skillWorkers');
 const chat = require('./route/chattingroute');
 
 const corsOptions = {
@@ -20,10 +19,9 @@ app.use(express.urlencoded({extended: false}))
 app.get('/', (req, res) => {
   res.send('HIREJOB REST API SERVER');
 });
-app.use('/candidate', UserRoute);
+app.use('/', UserRoute);
 app.use('/recruiter', UserRecRoute);
-app.use('/bio-candidate', BioCandRoute);
-app.use('/skill-candidate', skillworkers);
+app.use('/worker', BioCandRoute);
 app.use('/chatting', chat);
 
 app.listen(3001, () => {

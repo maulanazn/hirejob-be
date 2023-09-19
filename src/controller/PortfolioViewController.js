@@ -13,7 +13,7 @@ const GetPortfolioPageViewController = async (req, res) => {
         });
     } catch (error) {
         return res.status(400).json({
-            status: "Failed",
+            status: "Bad request",
             message: "Failed to getting portfolio view"
         })
     }

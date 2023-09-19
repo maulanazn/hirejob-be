@@ -1,9 +1,8 @@
 const jwt = require("jsonwebtoken");
-const secretKey = "secretKey123";
 require('dotenv').config();
 
 const UserModel = require("../model/UserModel");
-const { getUserByEmail, getUserById } = require("../model/Auth");
+const { getUserByEmail, getUserById } = require("../model/AuthModel");
 const { hashPassword, comparePassword } = require("../midlleware/hashing");
 const sendToMail = require("./../midlleware/sendemail");
 
@@ -42,9 +41,8 @@ const GetAllUserController = async (req, res) => {
       data: resultUsers.rows
     });
   } catch (error) {
-    return res.status(500).json({
-      status: "Failed",
-      Message: "Failed get by id",
+    return res.status(400).json({
+      status: "Bad request",
       data: error.message
     });    
   }
@@ -63,9 +61,8 @@ const GetUserByIdController = async (req, res) => {
       data: resultUserById.rows[0]
     });
   } catch (error) {
-    return res.status(500).json({
-      status: "Failed",
-      Message: "Failed get by id",
+    return res.status(400).json({
+      status: "Bad request",
       data: error.message
     });    
   }
@@ -74,7 +71,7 @@ const GetUserByIdController = async (req, res) => {
 //=========================================== Create User Controller ==================================
 
 const CreateUserController = async (req, res) => {
-  const { password, email } = req.body;
+  const { email, name, password, phone, position } = req.body;
   // Panjang password
   if (password.length <= 8) {
     return res.status(409).json({
@@ -108,16 +105,16 @@ const CreateUserController = async (req, res) => {
 
   // Hashing password
   let hash = await hashPassword(password);
-  req.body.password = hash;
+  password = hash;
 
   try {
     // change data
     let data = {
-      email: req.body.email,
-      name: req.body.name,
-      password: req.body.password,
-      phone: req.body.phone,
-      position: req.body.position,
+      email: email,
+      name: name,
+      password: password,
+      phone: phone,
+      position: position,
     };
 
     const result = await UserModel.CreateUserModel(data);
@@ -134,8 +131,8 @@ const CreateUserController = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
-      status: "Bad Server ",
+    res.status(400).json({
+      status: "Bad Request ",
       message: error.message,
     });
   }
@@ -164,10 +161,8 @@ const loginController = async (req, res) => {
     });
   }
 
-  console.log(emailVertifikasi);
-
   const pwd = emailVertifikasi.rows[0].password; // get properti password
-  // Vertifikasi password
+  
   let VertifikasiLogin = await comparePassword({
     passReq: password,
     passData: pwd,
@@ -179,25 +174,24 @@ const loginController = async (req, res) => {
     });
   }
 
-  // Payload
-  const token = emailVertifikasi.rows[0];
-  console.log(token);
-  const payload = {
-    id: token.id,
-    name: token.name,
-    // email: token.email,
-  };
-
-  const token1 = jwt.sign(payload, secretKey, { expiresIn: '1d' });
-
   try {
+    const userData = emailVertifikasi.rows[0];
+  
+    const payload = {
+      id: userData.id,
+      name: userData.name,
+      email: userData.email,
+    };
+  
+    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '30d' });
+
     res.status(201).json({
       status: "Succes",
       message: " Login Succes",
-      data: token1,
+      data: token,
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(400).json({
       status: "Bad Request",
       message: error.message,
     });
@@ -228,7 +222,7 @@ const activateUserController = async (req, res) => {
       message: "Email verifying is success",
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(400).json({
       status: "Bad Request",
       message: error.message,
     });
