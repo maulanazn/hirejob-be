@@ -6,7 +6,7 @@ const { hashPassword, comparePassword } = require("../midlleware/hashing");
 const sendToMail = require("./../midlleware/sendemail");
 
 //=========================================== Get User By Id Controller ==================================
-const GetUserRecByIdController = async (req, res) => {
+const getUserRecByIdController = async (req, res) => {
   const id = req.payload.id;
 
   try {
@@ -27,7 +27,7 @@ const GetUserRecByIdController = async (req, res) => {
 
 //=========================================== Create User Rec Controller ==================================
 
-const CreateUserRecController = async (req, res) => {
+const createUserRecController = async (req, res) => {
   const { email, name, password, position, phone, company_name} = req.body;
   // Panjang password
   if (password.length <= 8) {
@@ -188,8 +188,8 @@ const activateUserRecController = async (req, res) => {
 
 //========================================= Export Login ====================================
 module.exports = {
-  GetUserRecByIdController,
-  CreateUserRecController,
+  getUserRecByIdController,
+  createUserRecController,
   loginController,
   activateUserRecController,
 };

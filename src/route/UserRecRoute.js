@@ -4,14 +4,12 @@ const {VertifikasiToken} = require('./../midlleware/VertifikasiToken');
 const upload = require('./../midlleware/MulterPhoto');
 
 const UserRecControllers = require('../controller/UserRecController');
-const { CreateBiodataRecruiter } = require('../controller/BiodataRecruiterController');
-const { GetAllUserController } = require('../controller/UserController');
+const { getAllUserController } = require('../controller/UserController');
 
-route.post('/register', UserRecControllers.CreateUserRecController);
+route.post('/register', UserRecControllers.createUserRecController);
 route.post('/login/', UserRecControllers.loginController);
-route.get('/candidate-list', VertifikasiToken, GetAllUserController);
-route.get('/in', VertifikasiToken, UserRecControllers.GetUserRecByIdController);
+route.get('/candidate-list', VertifikasiToken, getAllUserController);
+route.get('/in', VertifikasiToken, UserRecControllers.getUserRecByIdController);
 route.get('/verify/:id', UserRecControllers.activateUserRecController);
-route.post('/bio', VertifikasiToken, CreateBiodataRecruiter);
 
 module.exports = route;

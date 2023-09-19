@@ -6,10 +6,7 @@ const { getUserByEmail, getUserById } = require("../model/AuthModel");
 const { hashPassword, comparePassword } = require("../midlleware/hashing");
 const sendToMail = require("./../midlleware/sendemail");
 
-//======================================= Import ==========================================================
-
-//=========================================== Get All user Controller ==================================
-const GetAllUserController = async (req, res) => {
+const getAllUserController = async (req, res) => {
   const {search, sortBy, sort, offset, limit} = req.query;
     
   const pageSearched = offset || 1;
@@ -48,8 +45,7 @@ const GetAllUserController = async (req, res) => {
   }
 }
 
-//=========================================== Get User By Id Controller ==================================
-const GetUserByIdController = async (req, res) => {
+const getUserByIdController = async (req, res) => {
   const id = req.payload.id;
 
   try {
@@ -70,7 +66,7 @@ const GetUserByIdController = async (req, res) => {
 
 //=========================================== Create User Controller ==================================
 
-const CreateUserController = async (req, res) => {
+const createUserController = async (req, res) => {
   const { email, name, password, phone, position } = req.body;
   // Panjang password
   if (password.length <= 8) {
@@ -95,7 +91,6 @@ const CreateUserController = async (req, res) => {
 
   // Vertifikasi Email
   let emailVertifikasi = await getUserByEmail(email);
-  console.log(emailVertifikasi);
   if (emailVertifikasi.rows[0]) {
     return res.status(409).json({
       status: " fail",
@@ -117,7 +112,7 @@ const CreateUserController = async (req, res) => {
       position: position,
     };
 
-    const result = await UserModel.CreateUserModel(data);
+    const result = await UserModel.createUserModel(data);
     // sending email
     sendToMail(
       result.email,
@@ -125,13 +120,13 @@ const CreateUserController = async (req, res) => {
       `<h1><a href="https://lazy-teal-piranha-vest.cyclic.cloud/user/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
     );
 
-    res.status(201).json({
+    return res.status(201).json({
       status: "succes",
       Message: "Your Create Data Success, please check your email",
       data: result,
     });
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "Bad Request ",
       message: error.message,
     });
@@ -144,7 +139,6 @@ const loginController = async (req, res) => {
   const { email, password } = req.body;
   // Validation Email
   let emailVertifikasi = await getUserByEmail(email);
-  console.log(emailVertifikasi);
   if (!emailVertifikasi.rows[0]) {
     return res.status(409).json({
       error: "Invalid email.",
@@ -185,13 +179,13 @@ const loginController = async (req, res) => {
   
     const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '30d' });
 
-    res.status(201).json({
+    return res.status(201).json({
       status: "Succes",
       message: " Login Succes",
       data: token,
     });
   } catch (error) {
-    res.status(400).json({
+    return res.status(400).json({
       status: "Bad Request",
       message: error.message,
     });
@@ -231,9 +225,9 @@ const activateUserController = async (req, res) => {
 
 //========================================= Export Login ====================================
 module.exports = {
-  GetAllUserController,
-  GetUserByIdController,
-  CreateUserController,
+  getAllUserController,
+  getUserByIdController,
+  createUserController,
   loginController,
   activateUserController,
 };

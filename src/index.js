@@ -5,7 +5,7 @@ const cors = require('cors');
 const UserRoute = require('./route/UserRoute');
 const UserRecRoute = require('./route/UserRecRoute');
 const BioCandRoute = require('./route/BiodataWorkersRoute');
-const chat = require('./route/chattingroute');
+const ChatRoute = require('./route/ChattingRoute');
 
 const corsOptions = {
   origin: '*',
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 app.use('/', UserRoute);
 app.use('/recruiter', UserRecRoute);
 app.use('/worker', BioCandRoute);
-app.use('/chatting', chat);
+app.use('/chatting', ChatRoute);
 
 app.listen(3001, () => {
   console.log(`Server Running On Port '${'3001'}'`);

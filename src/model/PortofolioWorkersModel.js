@@ -1,10 +1,7 @@
 const { pool } = require('../config/pg');
 
-//===================================== Create DATA ===========================================
-
-const CreatePortofolio = async (body) => {
+const createPortofolio = async (body) => {
   try {
-    console.log('QUERY DB');
     const result = await pool.query(
       `INSERT INTO portfolio (portfolio_name, repository_link, app_type, photo,user_id)
                          VALUES ($1, $2, $3, $4, $5)`,
@@ -12,13 +9,11 @@ const CreatePortofolio = async (body) => {
     );
     return result;
   } catch (error) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 };
 
-//============================================ Update Data =======================================
-
-const UpdatePortofolio = async (body, id) => {
+const updatePortofolio = async (body, id) => {
   try {
     const result = await pool.query(
       `UPDATE portfolio
@@ -29,21 +24,23 @@ const UpdatePortofolio = async (body, id) => {
 
     return result;
   } catch (error) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 };
 
-//=============================================== Validasi Data ======================================
-
-const Validasi = async (user_id) => {
-  const Query = 'SELECT * FROM portfolio WHERE user_id = $1';
-  const value = [user_id];
-
-  return pool.query(Query, value);
+const validatePortfolio = async (user_id) => {
+  try {
+    const result = 'SELECT * FROM portfolio WHERE user_id = $1';
+    const value = [user_id];
+  
+    return pool.query(result, value);
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
 module.exports = {
-  CreatePortofolio,
-  UpdatePortofolio,
-  Validasi,
+  createPortofolio,
+  updatePortofolio,
+  validatePortfolio,
 };

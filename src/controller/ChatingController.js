@@ -1,44 +1,34 @@
-const { SubAccountsResponse } = require('sib-api-v3-sdk');
 const ChatingModels = require('../model/ChatingModel');
 
-// ========================================================== Create Chating======================================
-
-const CreateFromcontroller = async (req, res) => {
+const createFromcontroller = async (req, res) => {
   const { id } = req.params;
   const payload = req.payload;
-  const body = req.body;
 
   try {
-    const user = await ChatingModels.ValidateUser(id);
+    const user = await ChatingModels.validateUser(id);
 
-    console.log(user.rows[0].name);
     const data = {
       user_id: id,
       user_name: user.rows[0].name,
       recruiter_id: payload.id,
       recruiter_name: payload.name,
     };
-    console.log('data');
-    console.log(data);
-    const createFrom = await ChatingModels.FromChattingModel(data);
-    res.status(201).json({
+
+    const createFrom = await ChatingModels.fromChattingModel(data);
+    return res.status(201).json({
       status: 'Succes',
       message: 'Succes Create From Chat',
       data: createFrom,
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
+    return res.status(400).json({
+      status: 'Bad request ',
       message: error.message,
     });
   }
 };
 
-// ================================================================ Create Chatting =======================================
-
-const CreateChatting = async (req, res) => {
+const createChatting = async (req, res) => {
   const { id } = req.params;
   const payload = req.payload;
   const body = req.body;
@@ -59,18 +49,16 @@ const CreateChatting = async (req, res) => {
   };
 
   try {
-    const validasi = await ChatingModels.Validatemessage(id);
-    console.log(validasi.rows[0]);
+    const validasi = await ChatingModels.validateMessage(id);
 
     if (!validasi) {
-      const chat = await ChatingModels.CreateChatting(data1);
+      const chat = await ChatingModels.createChatting(data1);
       res.status(201).json({
         status: 'Succes',
         message: 'Create Message Succes',
         data: chat,
       });
     } else {
-      console.log('Ini Data Tanpa Position');
       let data = {
         id_chat: id,
         id_pengirim: payload.id,
@@ -78,7 +66,8 @@ const CreateChatting = async (req, res) => {
         position: validasi.rows[0].position,
         message_detail: body.message_detail,
       };
-      const chatdua = await ChatingModels.CreateChattingnext(data);
+
+      const chatdua = await ChatingModels.createChattingnext(data);
       res.status(201).json({
         status: 'Succes',
         message: 'Update Message Succes',
@@ -86,10 +75,8 @@ const CreateChatting = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
+    return res.status(400).json({
+      status: 'Bad request ',
       message: error.message,
     });
   }
@@ -97,11 +84,11 @@ const CreateChatting = async (req, res) => {
 
 // ================================================================ Show From =====================================
 
-const ShowFromchatting = async (req, res) => {
+const showFromchatting = async (req, res) => {
   const payload = req.payload.id;
 
   try {
-    const user = await ChatingModels.ViewFromValidasi(payload);
+    const user = await ChatingModels.viewFromValidation(payload);
 
     if (user.rows[0]) {
       return res.status(200).json({
@@ -119,9 +106,8 @@ const ShowFromchatting = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json({
-      status: 'Error ',
-      message: 'Bad Server ',
+    return res.status(400).json({
+      status: 'Bad request ',
       message: error.message,
     });
   }
@@ -130,7 +116,7 @@ const ShowFromchatting = async (req, res) => {
 //=================================================== Module Exports =========================================
 
 module.exports = {
-  CreateFromcontroller,
-  CreateChatting,
-  ShowFromchatting,
+  createFromcontroller,
+  createChatting,
+  showFromchatting,
 };

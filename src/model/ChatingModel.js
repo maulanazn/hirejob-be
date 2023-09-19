@@ -2,9 +2,7 @@ const { query } = require('express');
 const { pool } = require('../config/pg');
 const { v4: uuidv4 } = require('uuid');
 
-// ============================================ Create from Chating =============================================
-
-const FromChattingModel = async (body) => {
+const fromChattingModel = async (body) => {
   const id = uuidv4();
   try {
     const result = await pool.query(
@@ -15,15 +13,11 @@ const FromChattingModel = async (body) => {
 
     return result;
   } catch (error) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 };
 
-//=========================================== Create from Chatting ===========================================
-
-//=============================================== Create Chatting ========================================
-
-const CreateChatting = async (body) => {
+const createChatting = async (body) => {
   const id = uuidv4();
   try {
     const result = await pool.query(
@@ -34,13 +28,11 @@ const CreateChatting = async (body) => {
 
     return result;
   } catch (error) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 };
 
-// ================================================ Create Chatting NEXt =======================================
-
-const CreateChattingnext = async (body) => {
+const createChattingnext = async (body) => {
   const id = uuidv4();
   try {
     const result = await pool.query(
@@ -51,75 +43,68 @@ const CreateChattingnext = async (body) => {
 
     return result;
   } catch (error) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 };
 
-//============================================ From Chatting =============================================
-
-const Shownamerect = async (user_id) => {
-  const Query = 'SELECT * FROM fromchatting WHERE user_id= $1';
+const showNameRec = async (user_id) => {
+  const result = 'SELECT * FROM fromchatting WHERE user_id= $1';
   const value = [user_id];
 
-  return pool.query(Query, value);
+  return pool.query(result, value);
 };
 
-const ShowNameCandidate = async (id_rect) => {
-  const Query = 'SELECT * FROM fromchatting WHERE id_rect = $1';
+const showNameCandidate = async (id_rect) => {
+  const result = 'SELECT * FROM fromchatting WHERE id_rect = $1';
   const value = [id_rect];
 
-  return pool.query(Query, value);
+  return pool.query(result, value);
 };
 
-//============================================== Show Chatting ===========================================
-
-//========================================== Validasi =============================================
-
-const ValidateUser = async (id) => {
-  const Query = 'SELECT * FROM users WHERE id = $1 ';
+const validateUser = async (id) => {
+  const result = 'SELECT * FROM users WHERE id = $1 ';
   const value = [id];
 
-  return pool.query(Query, value);
+  return pool.query(result, value);
 };
 
-const Validatemessage = async (form_message_id) => {
-  const Query = 'SELECT * FROM messages  WHERE form_message_id = $1 ';
+const validateMessage = async (form_message_id) => {
+  const result = 'SELECT * FROM messages  WHERE form_message_id = $1 ';
   const value = [form_message_id];
 
-  return pool.query(Query, value);
+  return pool.query(result, value);
 };
 
-const ViewFromValidasi = async (user_id) => {
+const viewFromValidation = async (user_id) => {
   try {
-    const Query = 'SELECT user_name FROM form_message  WHERE user_id = $1 ';
+    const result = 'SELECT user_name FROM form_message  WHERE user_id = $1 ';
     const value = [user_id];
 
-    return pool.query(Query, value);
+    return pool.query(result, value);
   } catch (error) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 };
 
-const ViewFromValidasirect = async (recruiter_id) => {
+const viewFromValidationRec = async (recruiter_id) => {
   try {
-    const Query = 'SELECT recruiter_name FROM form_message  WHERE recruiter_id = $1 ';
+    const result = 'SELECT recruiter_name FROM form_message  WHERE recruiter_id = $1 ';
     const value = [recruiter_id];
 
-    return pool.query(Query, value);
+    return pool.query(result, value);
   } catch (error) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 };
 
 module.exports = {
-  FromChattingModel,
-  CreateChatting,
-  Shownamerect,
-  ShowNameCandidate,
-  CreateChattingnext,
-  Validatemessage,
-  ValidateUser,
-  ViewFromValidasi,
-  ViewFromValidasirect,
-  //   ValidateRec,
+  fromChattingModel,
+  createChatting,
+  showNameRec,
+  showNameCandidate,
+  createChattingnext,
+  validateMessage,
+  validateUser,
+  viewFromValidation,
+  viewFromValidationRec,
 };

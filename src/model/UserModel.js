@@ -2,30 +2,30 @@ const { pool } = require('../config/pg');
 const { v4: uuidv4 } = require('uuid');
 
 // ================================================================== Get All User Kandidat ============================
-const GetAllUserModel = async (data) => {
+const getAllUserModel = async (data) => {
   try {
     const result = await pool.query(`SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE ${data.sortBy} ILIKE '%${data.sort}%' OFFSET ${data.offset} LIMIT ${data.limit}`);
 
     return result;
   } catch (error) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 }
 
 // ================================================================== Search All User Kandidat ============================
-const SearchAllUserModel = async (data) => {
+const searchAllUserModel = async (data) => {
   try {
     const result = await pool.query(`SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE name ILIKE '%${data.search}%' UNION SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE last_work ILIKE '%${data.search}%' UNION SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE province ILIKE '%${data.search}%' UNION SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE city ILIKE '%${data.search}%'`);
 
     return result;
   } catch (error) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 }
 
 // ================================================================== Create New User Kandidat ============================
 
-const CreateUserModel = async (body) => {
+const createUserModel = async (body) => {
   const id = uuidv4();
   try {
     const result = await pool.query(
@@ -36,32 +36,48 @@ const CreateUserModel = async (body) => {
 
     return result;
   } catch (error) {
-    throw Error(error.message);
+    throw new Error(error.message);
   }
 };
 
-//================================================================== Login ================================================
-const LoginModel = async (body) => {
-  const LoginUserQuerySql = 'SELECT * FROM users WHERE email = $1 AND password = $2';
-  values = [email, password];
+const updateUserModel = async (body) => {
+  // TODO: Business logic here
+}
 
-  return pool.query(LoginUserQuerySql, values);
+const deleteUserModel = async (body) => {
+  // TODO: Business logic here
+}
+
+//================================================================== Login ================================================
+const loginModel = async (body) => {
+  try {
+    const loginUserQuerySql = 'SELECT * FROM users WHERE email = $1 AND password = $2';
+    values = [email, password];
+  
+    return pool.query(loginUserQuerySql, values);
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
 //================================================================== Verified User ================================================
-const ActivateUserModel = async (id) => {
-  const ActivateUserQuerySql = 'UPDATE users SET verified=true WHERE id=$1';
-  values = [id];
-
-  return pool.query(ActivateUserQuerySql, values);
+const activateUserModel = async (id) => {
+  try {
+    const activateUserQuerySql = 'UPDATE users SET verified=true WHERE id=$1';
+    values = [id];
+  
+    return pool.query(activateUserQuerySql, values);
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
 //================================================= Export ========================================================
 
 module.exports = {
-  GetAllUserModel,
-  SearchAllUserModel,
-  CreateUserModel,
-  LoginModel,
-  ActivateUserModel,
+  getAllUserModel,
+  searchAllUserModel,
+  createUserModel,
+  loginModel,
+  activateUserModel,
 };

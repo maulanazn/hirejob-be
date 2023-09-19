@@ -4,7 +4,7 @@ const { query } = require('express');
 
 //============================================= Create  Work Experience ==========================
 
-const CreateExperienceModel = async (body) => {
+const createExperienceModel = async (body) => {
   const id = uuidv4();
   try {
     const result = await pool.query(
@@ -15,13 +15,12 @@ const CreateExperienceModel = async (body) => {
 
     return result;
   } catch (error) {
-    console.log(error);
-    throw error;
+    throw new Error(error.message);
   }
 };
 
 // =================================================== Update Work Experience ========================
-const UpdateExpModel = async (body, id) => {
+const updateExpModel = async (body, id) => {
   try {
     const result = await pool.query(
       `UPDATE work_experience
@@ -32,29 +31,36 @@ const UpdateExpModel = async (body, id) => {
 
     return result;
   } catch (error) {
-    console.log(error);
-    throw error;
+    throw new  Error(error.message);
   }
 };
 
-const GetAllWorkEXP = async (user_id) => {
-  const Query = 'SELECT * FROM work_experience WHERE user_id = $1';
-  const Value = [user_id];
-
-  return pool.query(Query, Value);
+const getAllWorkEXP = async (user_id) => {
+  try {
+    const query = 'SELECT * FROM work_experience WHERE user_id = $1';
+    const value = [user_id];
+  
+    return pool.query(query, value);
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
 // ================================================== DELETE EXP ========================================
 
-const DeleteExpModel = (id) => {
-  const Query = ' DELETE FROM work_experience WHERE id = $1';
-  const Value = [id];
-
-  return pool.query(Query, Value);
+const deleteExpModel = (id) => {
+  try {
+    const query = ' DELETE FROM work_experience WHERE id = $1';
+    const value = [id];
+  
+    return pool.query(query, value);
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 module.exports = {
-  CreateExperienceModel,
-  UpdateExpModel,
-  GetAllWorkEXP,
-  DeleteExpModel,
+  createExperienceModel,
+  updateExpModel,
+  getAllWorkEXP,
+  deleteExpModel,
 };
