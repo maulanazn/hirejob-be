@@ -1,6 +1,6 @@
 <div align="center">
     <h1>PEWorld Back End (Monolith)</h1>
-    <image src="https://github.com/maulanazn/RecipeMobileV1/blob/main/src/assets/pijarfoodbootsplash.png" width="230">
+    <image src="https://github.com/maulanazn/hirejob-be/blob/main/public/peworld.png" width="230">
     <p>PEWorld Back End part, that used by </p><a href="https://github.com/maulanazn/hirejob-fe">web version</a>. This part handle all the endpoint that frontend needs</p>
 </div>
 
