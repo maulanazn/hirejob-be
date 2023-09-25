@@ -1,6 +1,5 @@
-const Portofolio = require('../model/ProtofolioWorkersModel.js');
+const Portofolio = require('../model/PortofolioWorkersModel.js');
 const Workexp = require('../model/WorkExperienceModel.js');
-const PhotoProfile = require('../model/PhotoProfile');
 
 const cloudinary = require('../config/cloudinary');
 
@@ -145,54 +144,10 @@ const deleteWorksEXP = async (req, res) => {
   }
 };
 
-const createAndUpdatePhotoControler = async (req, res) => {
-  const payload = req.payload;
-
-  try {
-    const validasi = await PhotoProfile.VertifikasiPhoto(payload.id);
-    if (!validasi.rows[0]) {
-      const cloudphotoProfil = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
-      let data = {
-        user_id: payload.id,
-        photo_profile: cloudphotoProfil.url,
-        user_name: payload.name,
-      };
-      console.log('ini update');
-      const CreateData = await PhotoProfile.CreatePhotoProfile(data);
-      return res.status(201).json({
-        status: 'succes',
-        message: ' Succes Create photo',
-        error: false,
-        data: CreateData,
-      });
-    } else {
-      await cloudinary.uploader.destroy(req.file.path);
-      const cloudphotoProfil = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
-
-      let data = {
-        photo_profile: cloudphotoProfil.url,
-      };
-      const UpdatedataPhoto = await PhotoProfile.UpdatePhotoProfil(data, payload.id);
-      return res.status(201).json({
-        status: 'succes',
-        message: ' Succes Update photo',
-        error: false,
-        data: UpdatedataPhoto,
-      });
-    }
-  } catch (error) {
-    res.status(400).json({
-      status: 'Bad Request',
-      error: error.message,
-    });
-  }
-};
-
 module.exports = {
   createUpdatePortofolio,
   createWorkEXPController,
   updateWorksEXPController,
   getAllWorkEXPController,
   deleteWorksEXP,
-  createAndUpdatePhotoControler,
 };
