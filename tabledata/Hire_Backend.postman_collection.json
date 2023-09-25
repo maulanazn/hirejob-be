@@ -1,0 +1,531 @@
+{
+	"info": {
+		"_postman_id": "e16bd95a-0559-4760-a56f-7e679381ecee",
+		"name": "Hire_Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28539346",
+		"_collection_link": "https://bold-station-854073.postman.co/workspace/Hirejob-API-Specification~d91054a0-7a16-49e2-bf6f-384a10b2cfcd/collection/28539346-e16bd95a-0559-4760-a56f-7e679381ecee?action=share&source=collection_link&creator=28539346"
+	},
+	"item": [
+		{
+			"name": "Workers",
+			"item": [
+				{
+					"name": "AuthWorker",
+					"item": [
+						{
+							"name": "RegisterUser",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\" : \" Ariyanda1123@gmail.com\",\n    \"password\" : \"123qweASD@\",\n    \"name\" : \"ariyanda\",\n    \"phone\" : \"081811181111\",\n    \"position\" : \"siswa\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "loginUser",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n     \"email\" : \"maulinuxzn@gmail.com\",\n    \"password\" : \"Maulanazn112!\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/user/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "page edit Profil by Worker",
+					"item": [
+						{
+							"name": "CreateBiodata",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user_name\" : \"Ariyanda Z\",\n    \"province\" : \"province\",\n    \"city\" : \"city\",\n    \"last_work\" : \"last_work\",\n    \"description\" : \"description\"\n\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/workers",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"workers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateSKill",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyZDVhZjFiLWE3NDMtNDE2NC1iMDNkLTVhYzJjZjdkMmM5ZSIsIm5hbWUiOiJhcml5YW5kYSIsImlhdCI6MTY5MjM3ODY5MCwiZXhwIjoxNjkyMzg4NjkwfQ.Wv9Xt4ihYVBt7vbV3PvZBsPv35872McGf9NIm2Ce66k",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"skill_name\" : \"skill skill skill21\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/skill",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"skill"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ViewSkill",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PortofolioWorker",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/workers",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"workers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View Portofolio",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/workers",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"workers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create work EXP",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyZDVhZjFiLWE3NDMtNDE2NC1iMDNkLTVhYzJjZjdkMmM5ZSIsIm5hbWUiOiJhcml5YW5kYSIsImlhdCI6MTY5MjQ0MzYzMywiZXhwIjoxNjkyNDUzNjMzfQ.bVw33Oh_r1vO_nV4FR2mbpNpMeqMPd_7oYLal0eSNX0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"position\" : \" TEST11\",\n    \"company_name\" : \" TEST1\",\n    \"working_start_at\" : \"2022-06-21\",\n    \"working_end_at\" : \"2022-06-24\",\n    \"description\" : \" tttt\"\n   \n   \n  \n   \n\n   \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/workers/workexp",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"workers",
+										"workexp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update WOrk EXP",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyZDVhZjFiLWE3NDMtNDE2NC1iMDNkLTVhYzJjZjdkMmM5ZSIsIm5hbWUiOiJhcml5YW5kYSIsImlhdCI6MTY5MjQ0MzYzMywiZXhwIjoxNjkyNDUzNjMzfQ.bVw33Oh_r1vO_nV4FR2mbpNpMeqMPd_7oYLal0eSNX0",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"position\" : \"TEST2222222\",\n    \"company_name\" : \"TEST1\",\n    \"working_start_at\" : \"2022-06-21\",\n    \"working_end_at\" : \"2022-06-24\",\n    \"description\" : \"tttt\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3001/workers/workexp/c8b58aba-72f5-44ce-b690-a32342898298",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"workers",
+										"workexp",
+										"c8b58aba-72f5-44ce-b690-a32342898298"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Exp",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyZDVhZjFiLWE3NDMtNDE2NC1iMDNkLTVhYzJjZjdkMmM5ZSIsIm5hbWUiOiJhcml5YW5kYSIsImlhdCI6MTY5MjQ0NjEzOCwiZXhwIjoxNjkyNDU2MTM4fQ.7OqY075MRj_0nB3apxaNUOoqYeeYyY4VEMK1xRKz12g",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/workers/workexp/c3fcd9ad-a6da-4d9a-ac46-d954eb2ac9d8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"workers",
+										"workexp",
+										"c3fcd9ad-a6da-4d9a-ac46-d954eb2ac9d8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete exp by id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3001/workers/workexp/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"workers",
+										"workexp",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create photoProfile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyZDVhZjFiLWE3NDMtNDE2NC1iMDNkLTVhYzJjZjdkMmM5ZSIsIm5hbWUiOiJhcml5YW5kYSIsImlhdCI6MTY5MjUxNjg5NCwiZXhwIjoxNjkyNTI2ODk0fQ.uN2Pdl7IncY5Z2Ta0-yM21KzsrvFJ_DbF6cfuEFG4nk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "photo_profile",
+											"type": "file",
+											"src": "/home/selemene/Downloads/upload project/Rectangle 328.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:3001/workers/photoprofile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3001",
+									"path": [
+										"workers",
+										"photoprofile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View PhotoProfil",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Chatting",
+			"item": [
+				{
+					"name": "Get Form Chating",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/chatting/chat/9f415485-4629-415a-9e76-47c1fc08f181",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"chatting",
+								"chat",
+								"9f415485-4629-415a-9e76-47c1fc08f181"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Chatting",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"position\" : \" Pencoli\",\n    \"message_detail\" : \" Dia\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/chatting/chat/5ec53e81-7aa3-4b84-a924-bf0d58bf346e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"chatting",
+								"chat",
+								"5ec53e81-7aa3-4b84-a924-bf0d58bf346e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n    \"message_detail\" : \" col col\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/chatting/createchat/5ec53e81-7aa3-4b84-a924-bf0d58bf346e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"chatting",
+								"createchat",
+								"5ec53e81-7aa3-4b84-a924-bf0d58bf346e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View From",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/chatting/ViewAllchat",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"chatting",
+								"ViewAllchat"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rectruiter",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n     \"email\" : \"maulinuxzn@gmail.com\",\n    \"password\" : \"Maulanazn123!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/recruiter/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"recruiter",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

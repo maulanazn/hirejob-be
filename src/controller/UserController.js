@@ -20,7 +20,7 @@ const getAllUserController = async (req, res) => {
   }
   
   if (search != undefined) {
-    const resultUserSearch = await UserModel.SearchAllUserModel(data);
+    const resultUserSearch = await UserModel.searchAllUserModel(data);
     
     return res.status(200).json({
       status: "succes",
@@ -30,7 +30,7 @@ const getAllUserController = async (req, res) => {
   }
 
   try {
-    const resultUsers = await UserModel.GetAllUserModel(data);
+    const resultUsers = await UserModel.getAllUserModel(data);
 
     return res.status(200).json({
       status: "succes",
