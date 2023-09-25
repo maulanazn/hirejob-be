@@ -19,6 +19,7 @@ app.use(express.urlencoded({extended: false}))
 app.get('/', (req, res) => {
   res.send('HIREJOB REST API SERVER');
 });
+
 app.use('/', UserRoute);
 app.use('/recruiter', UserRecRoute);
 app.use('/worker', BioCandRoute);

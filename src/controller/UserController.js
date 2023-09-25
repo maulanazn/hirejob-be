@@ -64,10 +64,8 @@ const getUserByIdController = async (req, res) => {
   }
 }
 
-//=========================================== Create User Controller ==================================
-
 const createUserController = async (req, res) => {
-  const { email, name, password, phone, position } = req.body;
+  const { email, name, password, phone, position, last_work, description, photo, skill_name, domicile } = req.body;
   // Panjang password
   if (password.length <= 8) {
     return res.status(409).json({
@@ -100,25 +98,42 @@ const createUserController = async (req, res) => {
 
   // Hashing password
   let hash = await hashPassword(password);
-  password = hash;
 
   try {
     // change data
     let data = {
       email: email,
       name: name,
-      password: password,
+      password: hash,
       phone: phone,
       position: position,
+      last_work: last_work,
+      description: description,
+      photo: photo,
+      skill_name: skill_name,
+      domicile: domicile
     };
 
-    const result = await UserModel.createUserModel(data);
+    let result = await UserModel.createUserModel(data);
     // sending email
     sendToMail(
       result.email,
       "Verify email",
       `<h1><a href="https://lazy-teal-piranha-vest.cyclic.cloud/user/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
     );
+
+    const userById = await getUserById(result.rows[0].id);
+    
+    if (userById) {
+      result = await UserModel.updateUserModel(data, result.rows[0].id)
+
+
+      return res.status(201).json({
+        status: "succes",
+        Message: "Your Update Data Success",
+        data: result,
+      });
+    }
 
     return res.status(201).json({
       status: "succes",
@@ -132,8 +147,6 @@ const createUserController = async (req, res) => {
     });
   }
 };
-
-//============================================ Login Controller ====================================
 
 const loginController = async (req, res) => {
   const { email, password } = req.body;
@@ -192,7 +205,6 @@ const loginController = async (req, res) => {
   }
 };
 
-//======================================== Activate User Controller =======================
 const activateUserController = async (req, res) => {
   const { id } = req.params;
 
@@ -203,7 +215,7 @@ const activateUserController = async (req, res) => {
       message: "wrong id or email",
     });
 
-  const verifyingUser = await UserModel.ActivateUserModel(id);
+  const verifyingUser = await UserModel.activateUserModel(id);
   if (!verifyingUser)
     return res.status(409).json({
       status: "Failed",
@@ -223,7 +235,6 @@ const activateUserController = async (req, res) => {
   }
 };
 
-//========================================= Export Login ====================================
 module.exports = {
   getAllUserController,
   getUserByIdController,

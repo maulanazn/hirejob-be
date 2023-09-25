@@ -6,12 +6,11 @@ CREATE TABLE users (
     phone VARCHAR(20) UNIQUE,
     position VARCHAR(100),
     verified BOOLEAN DEFAULT false,
-    province VARCHAR(50),
-    city VARCHAR(50),
     last_work VARCHAR(255),
     description TEXT,
     photo VARCHAR,
-    skill_name TEXT
+    skill_name TEXT,
+    domicile VARCHAR
 );
 
 CREATE TABLE user_recruiter (

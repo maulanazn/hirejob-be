@@ -5,7 +5,6 @@ const { getUserRecByEmail, getUserRecById } = require("../model/AuthModel");
 const { hashPassword, comparePassword } = require("../midlleware/hashing");
 const sendToMail = require("./../midlleware/sendemail");
 
-//=========================================== Get User By Id Controller ==================================
 const getUserRecByIdController = async (req, res) => {
   const id = req.payload.id;
 
@@ -25,10 +24,8 @@ const getUserRecByIdController = async (req, res) => {
   }
 }
 
-//=========================================== Create User Rec Controller ==================================
-
 const createUserRecController = async (req, res) => {
-  const { email, name, password, position, phone, company_name} = req.body;
+  const { email, name, password, position, phone, photo, company_name, company_field, province, city, company_info, company_email, company_phone, linkedin_url } = req.body;
   // Panjang password
   if (password.length <= 8) {
     return res.status(409).json({
@@ -61,20 +58,27 @@ const createUserRecController = async (req, res) => {
 
   // Hashing password
   let hash = await hashPassword(password);
-  password = hash;
 
   try {
     // change data
     let data = {
       email: email,
       name: name,
-      password: password,
+      password: hash,
       position: position,
       phone: phone,
+      photo: photo,
       company_name: company_name,
+      company_field: company_field,
+      province: province,
+      city: city,
+      company_info: company_info,
+      company_email: company_email,
+      company_phone: company_phone,
+      linkedin_url: linkedin_url
     };
 
-    const result = await UserRecModel.CreateUserRecModel(data);
+    let result = await UserRecModel.createUserRecModel(data);
     //seding email
     sendToMail(
       result.email,
@@ -82,9 +86,19 @@ const createUserRecController = async (req, res) => {
       `<h1><a href="https://lazy-teal-piranha-vest.cyclic.cloud/recruiter/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
     );
 
+    if (result.rows[0]) {
+      result = await UserRecModel.updateUserRecModel(data, result.rows[0].id) 
+
+      return res.status(201).json({
+        status: "succes",
+        Message: "Your Update Data Success",
+        data: result,
+      });
+    }
+
     return res.status(201).json({
       status: "succes",
-      Message: "Your Create Data Success",
+      Message: "Your Create Data Success, check your email",
       data: result,
     });
   } catch (error) {
@@ -94,8 +108,6 @@ const createUserRecController = async (req, res) => {
     });
   }
 };
-
-//============================================ Login Controller ====================================
 
 const loginController = async (req, res) => {
   const { email, password } = req.body;
@@ -155,7 +167,6 @@ const loginController = async (req, res) => {
   }
 };
 
-//======================================== Activate User Rec Controller =======================
 const activateUserRecController = async (req, res) => {
   const { id } = req.params;
 
@@ -186,7 +197,6 @@ const activateUserRecController = async (req, res) => {
   }
 };
 
-//========================================= Export Login ====================================
 module.exports = {
   getUserRecByIdController,
   createUserRecController,

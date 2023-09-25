@@ -16,7 +16,7 @@ const getUserById = async (id) => {
   return new Promise((resolve, reject) =>
     pool.query(`SELECT * FROM users WHERE id = $1`, [id], (err, result) => {
       if (!err) {
-        resolve(result);
+          resolve(result)
       } else {
         reject(err);
       }
