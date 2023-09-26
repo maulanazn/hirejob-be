@@ -49,9 +49,10 @@ const createChatting = async (req, res) => {
   };
 
   try {
-    const validasi = await ChatingModels.validateMessage(id);
+    const validasi = await ChatingModels.validateMessage(payload.id);
+    // console.log(validasi);
 
-    if (!validasi) {
+    if (!validasi.rows[0]) {
       const chat = await ChatingModels.createChatting(data1);
       res.status(201).json({
         status: 'Succes',
@@ -59,6 +60,7 @@ const createChatting = async (req, res) => {
         data: chat,
       });
     } else {
+      console.log('datanya disini');
       let data = {
         id_chat: id,
         id_pengirim: payload.id,
@@ -86,6 +88,7 @@ const createChatting = async (req, res) => {
 
 const showFromchatting = async (req, res) => {
   const payload = req.payload.id;
+  console.log(payload);
 
   try {
     const user = await ChatingModels.viewFromValidation(payload);
@@ -97,7 +100,7 @@ const showFromchatting = async (req, res) => {
         data: user,
       });
     } else {
-      const rec = await ChatingModels.ViewFromValidasirect(payload);
+      const rec = await ChatingModels.viewFromValidationRec(payload);
 
       return res.status(200).json({
         status: 'Succes',

@@ -1,6 +1,7 @@
 const { query } = require('express');
 const { pool } = require('../config/pg');
 const { v4: uuidv4 } = require('uuid');
+const { getIO } = require('../config/WebSocket');
 
 const fromChattingModel = async (body) => {
   const id = uuidv4();
@@ -26,7 +27,17 @@ const createChatting = async (body) => {
       [id, body.id_chat, body.id_pengirim, body.name, body.message_detail]
     );
 
-    return result;
+    const comment = result.rows[0];
+
+    const io = getIO();
+
+    if (io) {
+      io.emit('new comment', comment);
+    } else {
+      console.error('Socket.IO is not properly initialized.');
+    }
+
+    return comment;
   } catch (error) {
     throw new Error(error.message);
   }
