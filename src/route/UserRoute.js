@@ -12,5 +12,6 @@ route.post('/update', VertifikasiToken, UserControllers.updateProfile);
 route.get('/in', VertifikasiToken, UserControllers.getUserByIdController);
 route.get('/portfolio-view/:id', VertifikasiToken, getPortPageViewController);
 route.get('/verify/:id', UserControllers.activateUserController);
+route.get('/allCandidate', VertifikasiToken, UserControllers.getAllUserController);
 
 module.exports = route;
