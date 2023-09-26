@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const secretKey = 'secretKey123';
+require('dotenv').config()
+// const secretKey = ;
 
 const VertifikasiToken = async (req, res, next) => {
   const generateToken = req.header('Authorization');
@@ -18,10 +19,9 @@ const VertifikasiToken = async (req, res, next) => {
       message: 'No token provided',
     });
   }
-
+  
   try {
-    console.log('=======================================');
-    const decoded = jwt.verify(token, secretKey);
+    const decoded = jwt.verify(token, process.env.JWT_KEY);
     req.payload = decoded;
     next();
   } catch (error) {

@@ -65,29 +65,8 @@ const getUserByIdController = async (req, res) => {
 }
 
 const createUserController = async (req, res) => {
-  const { email, name, password, phone, position, last_work, description, photo, skill_name, domicile } = req.body;
-  // Panjang password
-  if (password.length <= 8) {
-    return res.status(409).json({
-      status: " fail",
-      message: "Password to Short",
-    });
-  }
+  let { email, name, password, phone, position, last_work, description, photo, skill_name, domicile } = req.body;
 
-  // Validasi Unik Karater
-  const hasUpperCase = /[A-Z]/.test(password);
-  const hasLowerCase = /[a-z]/.test(password);
-  const hasSpecialChar = /[@.,!]/.test(password);
-
-  if (!hasUpperCase || !hasLowerCase || !hasSpecialChar) {
-    return res.status(409).json({
-      error: "Non-unique password.",
-      message:
-        "The password you entered is not unique. Please choose a password that has not been used before.",
-    });
-  }
-
-  // Vertifikasi Email
   let emailVertifikasi = await getUserByEmail(email);
   if (emailVertifikasi.rows[0]) {
     return res.status(409).json({
@@ -96,11 +75,9 @@ const createUserController = async (req, res) => {
     });
   }
 
-  // Hashing password
   let hash = await hashPassword(password);
 
   try {
-    // change data
     let data = {
       email: email,
       name: name,
@@ -122,27 +99,14 @@ const createUserController = async (req, res) => {
       `<h1><a href="https://lazy-teal-piranha-vest.cyclic.cloud/user/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
     );
 
-    const userById = await getUserById(result.rows[0].id);
-    
-    if (userById) {
-      result = await UserModel.updateUserModel(data, result.rows[0].id)
-
-
-      return res.status(201).json({
-        status: "succes",
-        Message: "Your Update Data Success",
-        data: result,
-      });
-    }
-
     return res.status(201).json({
       status: "succes",
       Message: "Your Create Data Success, please check your email",
-      data: result,
+      data: result.rows,
     });
   } catch (error) {
     return res.status(400).json({
-      status: "Bad Request ",
+      status: "Bad Request",
       message: error.message,
     });
   }
@@ -205,6 +169,37 @@ const loginController = async (req, res) => {
   }
 };
 
+const updateProfile = async (req, res) => {
+  let { name, position, domicile, last_work, description, photo, skill_name } = req.body;
+  const id = req.payload.id;
+
+  
+  try {
+    let data = {
+      name: name,
+      position: position,
+      domicile: domicile,
+      last_work: last_work,
+      description: description,
+      photo: photo,
+      skill_name: skill_name,
+    };
+
+    const result = await UserModel.updateUserModel(data, id)
+  
+    return res.status(201).json({
+      status: "succes",
+      Message: "Your Update Data Success",
+      data: result.rows,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: 'Bad request',
+      message: error.message
+    })
+  }
+}
+
 const activateUserController = async (req, res) => {
   const { id } = req.params;
 
@@ -240,5 +235,6 @@ module.exports = {
   getUserByIdController,
   createUserController,
   loginController,
+  updateProfile,
   activateUserController,
 };

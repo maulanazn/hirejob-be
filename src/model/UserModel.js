@@ -24,11 +24,7 @@ const searchAllUserModel = async (data) => {
 const createUserModel = async (body) => {
   const id = uuidv4();
   try {
-    const result = await pool.query(
-      `INSERT INTO users (id, email, name, password, phone,position)
-                   VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, email, name, phone, position`,
-      [id, body.email, body.name, body.password, body.phone, body.position]
-    );
+    const result = await pool.query(`INSERT INTO users (id, email, name, password, phone,position) VALUES ($1, $2, $3, $4, $5, $6)`, [id, body.email, body.name, body.password, body.phone, body.position]);
 
     return result;
   } catch (error) {
@@ -38,7 +34,7 @@ const createUserModel = async (body) => {
 
 const updateUserModel = async (body, id) => {
     try {
-        const result = await pool.query(`UPDATE users SET name = ?, position = ?, domicile = ?, last_work = ?, description = ?, photo = ?, skill_name = ? WHERE id = ?`, [body.name, body.position, body.domicile, body.last_work, body.description, body.photo, body.skill_name, id]);
+        const result = await pool.query(`UPDATE users SET name = $1, position = $2, domicile = $3, last_work = $4, description = $5, photo = $6, skill_name = $7 WHERE id = $8`, [body.name, body.position, body.domicile, body.last_work, body.description, body.photo, body.skill_name, id]);
 
         return result;
     } catch (error) {
@@ -48,7 +44,7 @@ const updateUserModel = async (body, id) => {
 
 const deleteUserModel = async (id) => {
     try {
-        const result = await pool.query(`DELETE FROM users WHERE id = ?`, [id]);
+        const result = await pool.query(`DELETE FROM users WHERE id = $1`, [id]);
 
         return result;
     } catch (error) {
