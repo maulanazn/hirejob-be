@@ -1,47 +1,94 @@
 const Portofolio = require('../model/PortofolioWorkersModel.js');
 const Workexp = require('../model/WorkExperienceModel.js');
-
 const cloudinary = require('../config/cloudinary');
 
-const createUpdatePortofolio = async (req, res) => {
+const getUserPortfolio = async (req, res) => {
+  try {
+    const result = await Portofolio.userPortfolio(req.payload.id);
+    return res.status(201).json({
+      status: ' Succes ',
+      message: ' Succes getting user Portofolio',
+      data: result.rows,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'Bad request',
+      message: error.message,
+    });
+  }
+};
+
+const postPortfolio = async (req, res) => {
   const payload = req.payload;
-  const { portfolio_name, repository_link, app_type, photo } = req.body;
-  const cloudphotoProfil = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
-  const url = cloudphotoProfil.url;
+  const { portfolio_name, repository_link, app_type } = req.body;
+  const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
 
   let data = {
     portfolio_name,
     repository_link,
     app_type,
-    photo: photo.url,
+    photo: photo.secure_url,
     user_id: payload.id,
   };
 
-  let data1 = {
-    portfolio_name,
-    repository_link,
-    app_type,
-    photo: url,
-  };
-
   try {
-    const Validasi = await Portofolio.Validasi(payload.id);
-    if (!Validasi.rows[0]) {
-      const create = await Portofolio.CreatePortofolio(data);
-      return res.status(201).json({
-        status: ' Succes ',
-        message: ' Succes Create Portofolio',
-        data: create,
-      });
-    } else {
-      const update = await Portofolio.UpdatePortofolio(data1, payload.id);
+    const result = await Portofolio.createPortofolio(data);
+    return res.status(201).json({
+      status: ' Succes ',
+      message: ' Succes Create Portofolio',
+      data: result.rows,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'Bad request',
+      message: error.message,
+    });
+  }
+};
+
+const putPortfolio = async (req, res) => {
+  const { portfolio_name, repository_link, app_type } = req.body;
+
+  if (!req.file) {
+    let data = {
+      portfolio_name,
+      repository_link,
+      app_type,
+      id: req.params.id
+    };
+
+    try {
+      const result = await Portofolio.updatePortofolio(data);
       return res.status(201).json({
         status: ' Succes ',
         message: ' Succes update Portofolio',
-        error: false,
-        data: update,
+        data: result.rows,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 'Bad request',
+        message: error.message,
       });
     }
+  }
+
+  const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
+
+  let data = {
+    portfolio_name,
+    repository_link,
+    app_type,
+    photo: photo.secure_url,
+    id: req.params.id
+  };
+
+  try {
+    const result = await Portofolio.updatePortofolio(data);
+    return res.status(201).json({
+      status: ' Succes ',
+      message: ' Succes update Portofolio',
+      data: result.rows,
+    });
   } catch (error) {
     res.status(400).json({
       status: 'Bad request',
@@ -69,7 +116,7 @@ const createWorkEXPController = async (req, res) => {
     res.status(201).json({
       status: ' Succes ',
       message: ' Create Data Succes',
-      data: dataCreate,
+      data: dataCreate.rows,
     });
   } catch (error) {
     res.status(400).json({
@@ -95,7 +142,7 @@ const updateWorksEXPController = async (req, res) => {
   };
 
   try {
-    const Updatedata = await Workexp.UpdateExpModel(data, id);
+    const Updatedata = await Workexp.updateExpModel(data, id);
     res.status(201).json({
       status: 'Succes',
       message: ' Succes Update Data',
@@ -113,7 +160,7 @@ const getAllWorkEXPController = async (req, res) => {
   const payload = req.payload.id;
 
   try {
-    const GetallData = await Workexp.GetAllWorkEXP(payload);
+    const GetallData = await Workexp.getAllWorkEXP(payload);
     res.status(200).json({
       status: ' Succes ',
       message: ' View All Data Exp',
@@ -145,7 +192,9 @@ const deleteWorksEXP = async (req, res) => {
 };
 
 module.exports = {
-  createUpdatePortofolio,
+  getUserPortfolio,
+  postPortfolio,
+  putPortfolio,
   createWorkEXPController,
   updateWorksEXPController,
   getAllWorkEXPController,

@@ -12,6 +12,7 @@ CREATE TABLE users (
     skill_name TEXT,
     domicile VARCHAR
 );
+SELECT * FROM users WHERE email = 'maulinuxzn@gmail.com';
 
 CREATE TABLE user_recruiter (
     id VARCHAR(150) PRIMARY KEY,
@@ -56,19 +57,20 @@ CREATE TABLE work_experience (
 SELECT * FROM work_experience;
 INSERT INTO work_experience (id, user_name, user_id, position, company_name, working_start_at, working_end_at, description) VALUES(md5(random()::text),'maulinux', '51d75df0-5b74-47be-a48b-90b6b500b0a2', 'Back End Engineer at Grab', 'Grab', '2023-12-12', '2023-12-12', 'lakjsldjf');
 ALTER TABLE work_experience ADD CONSTRAINT work_experience_username_fkey FOREIGN KEY (user_id) REFERENCES users(id);
-TRUNCATE work_experience;
+ALTER 
 
 CREATE TABLE portfolio (
     id VARCHAR(170) PRIMARY KEY,
-    user_id VARCHAR(100) UNIQUE,
     repository_link VARCHAR(255),
     app_type VARCHAR(95),
     photo VARCHAR(255),
     created_at DATE DEFAULT NOW(),
-    portfolio_name VARCHAR
+    portfolio_name VARCHAR,
+    user_id VARCHAR(100)
 );
 
 SELECT * FROM portfolio;
+TRUNCATE portfolio;
 INSERT INTO portfolio (id, user_id, name, repository_link, app_type, photo, created_at) VALUES(md5(random()::text), '51d75df0-5b74-47be-a48b-90b6b500b0a2', 'lakjsdfsadf', 'laksjdlfkjsaldf', 'alskjdflasd', 'laksjdlfkjsadf', NOW());
 SELECT * FROM users;
 ALTER TABLE portfolio ADD CONSTRAINT portfolio_username_fkey FOREIGN KEY (user_id) REFERENCES users(id);
@@ -95,6 +97,6 @@ CREATE TABLE messages (
 SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id;
 
 -- SELECT ALL TO PORTFOLIO VIEW
-SELECT users.photo, users.name, users.province, users.city, users.description, work_experience.position, email, portfolio.photo AS portfolio_photo, portfolio.portfolio_name AS portfolio_name, work_experience.position AS work_position, work_experience.company_name, work_experience.working_start_at, work_experience.working_end_at FROM users JOIN portfolio ON portfolio.user_id = users.id JOIN work_experience ON work_experience.user_id = users.id WHERE users.id = '51d75df0-5b74-47be-a48b-90b6b500b0a2';
+SELECT users.photo, users.name, users.position, users.domicile, users.last_work, users.description, users.skill_name, portfolio.photo, portfolio.portfolio_name, work_experience.position, work_experience.company_name, work_experience.working_start_at, work_experience.working_end_at, work_experience.description FROM users JOIN portfolio ON portfolio.user_id = users.id JOIN work_experience ON work_experience.user_id = users.id WHERE users.id = '87090013-71bb-4906-b396-940552098eb3';
 
 SELECT work_experience.position, users.city, users.province FROM users JOIN work_experience ON work_experience.user_id = users.id WHERE users.id = '9f415485-4629-415a-9e76-47c1fc08f181';

@@ -1,6 +1,6 @@
 const { getPortfolioViewModel } = require("../model/PortfolioViewModel");
 
-const getPortPageViewController = async (req, res) => {
+const getPortfolioPageViewController = async (req, res) => {
     const {id} = req.params;
 
     try {
@@ -19,4 +19,4 @@ const getPortPageViewController = async (req, res) => {
     }
 }
 
-module.exports = {getPortPageViewController};
+module.exports = {getPortfolioPageViewController};

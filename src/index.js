@@ -7,14 +7,10 @@ const UserRecRoute = require('./route/UserRecRoute');
 const BioCandRoute = require('./route/BiodataWorkersRoute');
 const ChatRoute = require('./route/ChattingRoute');
 const { init } = require('./config/WebSocket');
-// ========================================================= End Init ================================================================
-// ========================================================= Config Web Socket ======================================================
 const http = require('http');
 app.use(cors());
 const server = http.createServer(app);
 init(server);
-
-//========================================================== End Config Web Socket ========================================================
 
 const corsOptions = {
   origin: '*',
