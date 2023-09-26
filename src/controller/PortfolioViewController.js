@@ -1,10 +1,10 @@
-const { GetPortfolioViewModel } = require("../model/PortfolioViewModel");
+const { getPortfolioViewModel } = require("../model/PortfolioViewModel");
 
 const getPortPageViewController = async (req, res) => {
     const {id} = req.params;
 
     try {
-        const result = await GetPortfolioViewModel(id);
+        const result = await getPortfolioViewModel(id);
 
         return res.status(200).json({
             status: "Success",

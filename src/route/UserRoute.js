@@ -2,8 +2,9 @@ const express = require('express');
 const route = express.Router();
 
 const UserControllers = require('../controller/UserController');
-const {VertifikasiToken} = require('./../midlleware/VertifikasiToken');
+const { VertifikasiToken } = require('./../midlleware/VertifikasiToken');
 const { getPortPageViewController } = require('../controller/PortfolioViewController');
+
 
 route.post('/register', UserControllers.createUserController);
 route.post('/login', UserControllers.loginController);
