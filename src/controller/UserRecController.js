@@ -127,17 +127,15 @@ const loginController = async (req, res) => {
     });
   }
 
-  // Payload
-  const userData = emailVertifikasi.rows[0];
-  const payload = {
-    id: userData.id,
-    name: userData.name,
-    email: userData.email,
-  };
-
-  const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "30d" });
-
   try {
+    const userData = emailVertifikasi.rows[0];
+    const payload = {
+      id: userData.id,
+      name: userData.name,
+      email: userData.email,
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "30d" });
     return res.status(201).json({
       status: "Succes",
       message: " Login Succes",
@@ -155,7 +153,6 @@ const updateRecProfile = async (req, res) => {
   let { company_name, company_field, province, city, company_info, email, company_email, company_phone, linkedin_url, photo } = req.body;
   const id = req.payload.id;
 
-  
   try {
     let data = {
       company_name: company_name,
