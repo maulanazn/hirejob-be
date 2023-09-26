@@ -65,7 +65,7 @@ const getUserByIdController = async (req, res) => {
 }
 
 const createUserController = async (req, res) => {
-  let { email, name, password, phone, position, last_work, description, photo, skill_name, domicile } = req.body;
+  let { email, name, password, phone, position } = req.body;
 
   let emailVertifikasi = await getUserByEmail(email);
   if (emailVertifikasi.rows[0]) {
@@ -83,12 +83,7 @@ const createUserController = async (req, res) => {
       name: name,
       password: hash,
       phone: phone,
-      position: position,
-      last_work: last_work,
-      description: description,
-      photo: photo,
-      skill_name: skill_name,
-      domicile: domicile
+      position: position
     };
 
     let result = await UserModel.createUserModel(data);

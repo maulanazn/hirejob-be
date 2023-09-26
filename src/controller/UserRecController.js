@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+require('dotenv').config()
 
 const UserRecModel = require("../model/UserRecModel");
 const { getUserRecByEmail, getUserRecById } = require("../model/AuthModel");
@@ -25,7 +26,7 @@ const getUserRecByIdController = async (req, res) => {
 }
 
 const createUserRecController = async (req, res) => {
-  const { email, name, password, position, phone, photo, company_name, company_field, province, city, company_info, company_email, company_phone, linkedin_url } = req.body;
+  const { email, name, password, phone, position, company_name } = req.body;
   // Panjang password
   if (password.length <= 8) {
     return res.status(409).json({
@@ -67,15 +68,8 @@ const createUserRecController = async (req, res) => {
       password: hash,
       position: position,
       phone: phone,
-      photo: photo,
-      company_name: company_name,
-      company_field: company_field,
-      province: province,
-      city: city,
-      company_info: company_info,
-      company_email: company_email,
-      company_phone: company_phone,
-      linkedin_url: linkedin_url
+      position: position,
+      company_name: company_name
     };
 
     let result = await UserRecModel.createUserRecModel(data);
@@ -86,20 +80,10 @@ const createUserRecController = async (req, res) => {
       `<h1><a href="https://lazy-teal-piranha-vest.cyclic.cloud/recruiter/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
     );
 
-    if (result.rows[0]) {
-      result = await UserRecModel.updateUserRecModel(data, result.rows[0].id) 
-
-      return res.status(201).json({
-        status: "succes",
-        Message: "Your Update Data Success",
-        data: result,
-      });
-    }
-
     return res.status(201).json({
       status: "succes",
       Message: "Your Create Data Success, check your email",
-      data: result,
+      data: result.rows,
     });
   } catch (error) {
     return res.status(400).json({
@@ -151,7 +135,7 @@ const loginController = async (req, res) => {
     email: userData.email,
   };
 
-  const token = jwt.sign(payload, proces.env.JWT_KEY, { expiresIn: "30d" });
+  const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "30d" });
 
   try {
     return res.status(201).json({
@@ -166,6 +150,40 @@ const loginController = async (req, res) => {
     });
   }
 };
+
+const updateRecProfile = async (req, res) => {
+  let { company_name, company_field, province, city, company_info, email, company_email, company_phone, linkedin_url, photo } = req.body;
+  const id = req.payload.id;
+
+  
+  try {
+    let data = {
+      company_name: company_name,
+      company_field: company_field,
+      province: province,
+      city: city,
+      company_info: company_info,
+      email: email,
+      company_email: company_email,
+      company_phone: company_phone,
+      linkedin_url: linkedin_url,
+      photo: photo
+    };
+
+    const result = await UserRecModel.updateUserRecModel(data, id)
+  
+    return res.status(201).json({
+      status: "succes",
+      Message: "Your Update Data Success",
+      data: result.rows,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: 'Bad request',
+      message: error.message
+    })
+  }
+}
 
 const activateUserRecController = async (req, res) => {
   const { id } = req.params;
@@ -201,5 +219,6 @@ module.exports = {
   getUserRecByIdController,
   createUserRecController,
   loginController,
+  updateRecProfile,
   activateUserRecController,
 };

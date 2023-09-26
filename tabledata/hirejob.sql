@@ -13,9 +13,6 @@ CREATE TABLE users (
     domicile VARCHAR
 );
 
-SELECT * FROM users;
-SELECT * FROM users WHERE name = 'Maulana';
-
 CREATE TABLE user_recruiter (
     id VARCHAR(150) PRIMARY KEY,
     name VARCHAR(100),
