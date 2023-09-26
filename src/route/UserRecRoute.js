@@ -8,7 +8,7 @@ const { getAllUserController } = require('../controller/UserController');
 
 route.post('/register', UserRecControllers.createUserRecController);
 route.post('/login', UserRecControllers.loginController);
-route.post('/update', UserRecControllers.updateRecProfile);
+route.post('/update', VertifikasiToken, UserRecControllers.updateRecProfile);
 route.get('/candidate-list', VertifikasiToken, getAllUserController);
 route.get('/in', VertifikasiToken, UserRecControllers.getUserRecByIdController);
 route.get('/verify/:id', UserRecControllers.activateUserRecController);

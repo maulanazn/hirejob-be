@@ -60,7 +60,7 @@ Contributions are what make the open source community such an amazing place to b
 
 ## Related Project
 * [`PEWorld Demo`](https://hirejob.pages.dev/)
-* [`PEWorld Rest API`](https://lazy-teal-piranha-vest.cyclic.cloud/)
+* [`PEWorld Rest API`](https://tan-bewildered-turtle.cyclic.cloud/)
 * [`PEWorld Frontend Repository`](https://github.com/maulanazn/hirejob-fe)
 
 ## Notes:
