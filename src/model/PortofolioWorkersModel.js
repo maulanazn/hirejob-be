@@ -5,7 +5,7 @@ const userPortfolio = async (user_id) => {
   const id = uuidv4();
 
   try {
-    const result = await pool.query("SELECT portfolio_name, repository_link, photo, app_type, created_at FROM portfolio WHERE user_id = $1", [user_id]);
+    const result = await pool.query("SELECT user_id, portfolio_name, repository_link, photo, app_type, created_at FROM portfolio WHERE user_id = $1", [user_id]);
 
     return result;
   } catch (error) {
