@@ -73,7 +73,6 @@ CREATE TABLE portfolio (
 );
 
 SELECT * FROM portfolio;
-TRUNCATE portfolio;
 INSERT INTO portfolio (id, user_id, name, repository_link, app_type, photo, created_at) VALUES(md5(random()::text), '51d75df0-5b74-47be-a48b-90b6b500b0a2', 'lakjsdfsadf', 'laksjdlfkjsaldf', 'alskjdflasd', 'laksjdlfkjsadf', NOW());
 SELECT * FROM users;
 ALTER TABLE portfolio ADD CONSTRAINT portfolio_username_fkey FOREIGN KEY (user_id) REFERENCES users(id);
