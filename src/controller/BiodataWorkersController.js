@@ -19,7 +19,7 @@ const getUserPortfolio = async (req, res) => {
 };
 
 const postPortfolio = async (req, res) => {
-  const payload = req.payload.id;
+  const payload = req.payload;
   const { portfolio_name, repository_link, app_type } = req.body;
   const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
 
@@ -27,8 +27,8 @@ const postPortfolio = async (req, res) => {
     portfolio_name,
     repository_link,
     app_type,
-    photo: photo.secure_url,
-    user_id: payload,
+    photo: photo.url,
+    user_id: payload.id,
   };
 
   try {
@@ -78,7 +78,7 @@ const putPortfolio = async (req, res) => {
     portfolio_name,
     repository_link,
     app_type,
-    photo: photo.secure_url,
+    photo: photo.url,
     id: req.params.id
   };
 

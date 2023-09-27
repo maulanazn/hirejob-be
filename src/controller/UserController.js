@@ -161,7 +161,7 @@ const updateProfile = async (req, res) => {
       domicile: domicile,
       last_work: last_work,
       description: description,
-      photo: photo.secure_url,
+      photo: photo.url,
       skill_name: skill_name,
     };
 
