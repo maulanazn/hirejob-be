@@ -6,6 +6,7 @@ const UserRoute = require('./route/UserRoute');
 const UserRecRoute = require('./route/UserRecRoute');
 const BioCandRoute = require('./route/BiodataWorkersRoute');
 const ChatRoute = require('./route/ChattingRoute');
+const SocmedRoute = require('./route/SocmedRoute');
 
 // const { init } = require('./config/WebSocket');
 // const http = require('http');
@@ -30,6 +31,8 @@ app.use('/', UserRoute);
 app.use('/recruiter', UserRecRoute);
 app.use('/worker', BioCandRoute);
 app.use('/chatting', ChatRoute);
+app.use('/chatting', ChatRoute);
+app.use('/socmed', SocmedRoute);
 
 app.listen(3000, () => {
   console.log(`Server Running On Port '${'3000'}'`);

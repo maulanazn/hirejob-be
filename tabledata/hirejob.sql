@@ -38,7 +38,7 @@ SELECT * FROM user_recruiter;
 
 CREATE TABLE social_media (
     id VARCHAR PRIMARY KEY,
-    user_id VARCHAR UNIQUE,
+    user_id VARCHAR,
     social_media_name VARCHAR,
     link VARCHAR
 );
