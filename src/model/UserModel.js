@@ -4,18 +4,9 @@ const { v4: uuidv4 } = require('uuid');
 const getAllUserModel = async (data) => {
   try {
     const result = await pool.query(
-      `SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE ${data.sortBy} ILIKE '%${data.sort}%' OFFSET ${data.offset} LIMIT ${data.limit}`
+      `SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE ${data.sortBy} ILIKE '%${data.sort}%' OFFSET ${data.offset} LIMIT ${data.limit}`
     );
 
-    return result;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
-const GetallCandidateModel = async (data) => {
-  try {
-    const result = await pool.query('SELECT * FROM users');
     return result;
   } catch (error) {
     throw new Error(error.message);
@@ -25,7 +16,7 @@ const GetallCandidateModel = async (data) => {
 const searchAllUserModel = async (data) => {
   try {
     const result = await pool.query(
-      `SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE name ILIKE '%${data.search}%' UNION SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE last_work ILIKE '%${data.search}%' UNION SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE province ILIKE '%${data.search}%' UNION SELECT candidate_profile.photo AS candidate_photo, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id WHERE city ILIKE '%${data.search}%'`
+      `SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE name ILIKE '%${data.search}%' UNION SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE last_work ILIKE '%${data.search}%' UNION SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE domicile ILIKE '%${data.search}%'`
     );
 
     return result;
@@ -37,7 +28,7 @@ const searchAllUserModel = async (data) => {
 const createUserModel = async (body) => {
   const id = uuidv4();
   try {
-    const result = await pool.query(`INSERT INTO users (id, email, name, password, phone,position) VALUES ($1, $2, $3, $4, $5, $6)`, [id, body.email, body.name, body.password, body.phone, body.position]);
+    const result = await pool.query(`INSERT INTO users (id, email, name, password, phone, position) VALUES ($1, $2, $3, $4, $5, $6)`, [id, body.email, body.name, body.password, body.phone, body.position]);
 
     return result;
   } catch (error) {
@@ -85,17 +76,6 @@ const loginModel = async (body) => {
   }
 };
 
-const activateUserModel = async (id) => {
-  try {
-    const activateUserQuerySql = 'UPDATE users SET verified=true WHERE id=$1';
-    values = [id];
-
-    return pool.query(activateUserQuerySql, values);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
 module.exports = {
   getAllUserModel,
   searchAllUserModel,
@@ -103,6 +83,4 @@ module.exports = {
   updateUserModel,
   deleteUserModel,
   loginModel,
-  activateUserModel,
-  GetallCandidateModel,
 };

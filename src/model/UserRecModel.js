@@ -46,21 +46,9 @@ const loginModel = async (body) => {
   }
 };
 
-const activateUserRecModel = async (id) => {
-  try {
-    const activateUserRecQuerySql = 'UPDATE user_recruiter SET verified=true WHERE id=$1';
-    values = [id];
-  
-    return pool.query(activateUserRecQuerySql, values);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
 module.exports = {
   createUserRecModel,
   updateUserRecModel,
   deleteUserRecModel,
   loginModel,
-  activateUserRecModel,
 };

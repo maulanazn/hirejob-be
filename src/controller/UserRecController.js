@@ -4,7 +4,6 @@ require('dotenv').config()
 const UserRecModel = require("../model/UserRecModel");
 const { getUserRecByEmail, getUserRecById } = require("../model/AuthModel");
 const { hashPassword, comparePassword } = require("../midlleware/hashing");
-const sendToMail = require("./../midlleware/sendemail");
 
 const getUserRecByIdController = async (req, res) => {
   const id = req.payload.id;
@@ -73,12 +72,6 @@ const createUserRecController = async (req, res) => {
     };
 
     let result = await UserRecModel.createUserRecModel(data);
-    //seding email
-    sendToMail(
-      result.email,
-      "Verify email",
-      `<h1><a href="https://lazy-teal-piranha-vest.cyclic.cloud/recruiter/verify/${result.id}">VERIFY EMAIL!!</a></h1>`
-    );
 
     return res.status(201).json({
       status: "succes",
@@ -95,21 +88,12 @@ const createUserRecController = async (req, res) => {
 
 const loginController = async (req, res) => {
   const { email, password } = req.body;
-  // Validation Email
   let emailVertifikasi = await getUserRecByEmail(email);
   if (!emailVertifikasi.rows[0]) {
     return res.status(409).json({
       error: "Invalid email.",
       message:
         "The email address you entered is not valid. Please enter a valid email address.",
-    });
-  }
-
-  // verifikasi verified is true or false
-  if (!emailVertifikasi.rows[0].verified) {
-    return res.status(401).json({
-      status: "Failed",
-      message: "You have to check your email first to verify your account",
     });
   }
 
@@ -182,40 +166,9 @@ const updateRecProfile = async (req, res) => {
   }
 }
 
-const activateUserRecController = async (req, res) => {
-  const { id } = req.params;
-
-  const findById = await getUserRecById(id);
-  if (!findById)
-    return res.status(409).json({
-      status: "Failed",
-      message: "wrong id or email",
-    });
-
-  const verifyingUserRec = await UserRecModel.ActivateUserRecModel(id);
-  if (!verifyingUserRec)
-    return res.status(409).json({
-      status: "Failed",
-      message: "Email verifying is failed, contact the developer on email",
-    });
-
-  try {
-    return res.status(200).json({
-      status: "Success",
-      message: "Email verifying is success",
-    });
-  } catch (error) {
-    return res.status(400).json({
-      status: "Bad Request",
-      message: error.message,
-    });
-  }
-};
-
 module.exports = {
   getUserRecByIdController,
   createUserRecController,
   loginController,
   updateRecProfile,
-  activateUserRecController,
 };

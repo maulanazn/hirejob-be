@@ -14,7 +14,7 @@ const express = require('express');
 const route = express.Router();
 
 route.get('/portfolio', VertifikasiToken, upload.single('photo'), getUserPortfolio);
-route.post('/portfolio', VertifikasiToken, upload.single('photo'), postPortfolio);
+route.post('/portfolio/:id', VertifikasiToken, upload.single('photo'), postPortfolio);
 route.put('/portfolio/:id', VertifikasiToken, upload.single('photo'), putPortfolio);
 route.post('/workexp', VertifikasiToken, createWorkEXPController);
 route.put('/workexp/:id', VertifikasiToken, updateWorksEXPController);

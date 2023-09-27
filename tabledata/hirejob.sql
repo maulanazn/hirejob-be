@@ -12,7 +12,8 @@ CREATE TABLE users (
     skill_name TEXT,
     domicile VARCHAR
 );
-SELECT * FROM users WHERE email = 'maulinuxzn@gmail.com';
+
+SELECT * FROM users;
 
 CREATE TABLE user_recruiter (
     id VARCHAR(150) PRIMARY KEY,
@@ -32,6 +33,8 @@ CREATE TABLE user_recruiter (
     linkedin_url VARCHAR,
     photo VARCHAR
 );
+
+SELECT * FROM user_recruiter;
 
 CREATE TABLE social_media (
     id VARCHAR PRIMARY KEY,
@@ -100,3 +103,5 @@ SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_
 SELECT users.photo, users.name, users.position, users.domicile, users.last_work, users.description, users.skill_name, portfolio.photo, portfolio.portfolio_name, work_experience.position, work_experience.company_name, work_experience.working_start_at, work_experience.working_end_at, work_experience.description FROM users JOIN portfolio ON portfolio.user_id = users.id JOIN work_experience ON work_experience.user_id = users.id WHERE users.id = '87090013-71bb-4906-b396-940552098eb3';
 
 SELECT work_experience.position, users.city, users.province FROM users JOIN work_experience ON work_experience.user_id = users.id WHERE users.id = '9f415485-4629-415a-9e76-47c1fc08f181';
+
+SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE name ILIKE '%Clint%' UNION SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE last_work ILIKE '%n%' UNION SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE domicile ILIKE '%b%';
