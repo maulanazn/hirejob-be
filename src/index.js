@@ -31,6 +31,6 @@ app.use('/recruiter', UserRecRoute);
 app.use('/worker', BioCandRoute);
 app.use('/chatting', ChatRoute);
 
-server.listen(3000, () => {
+app.listen(3000, () => {
   console.log(`Server Running On Port '${'3000'}'`);
 });
