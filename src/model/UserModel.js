@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const getAllUserModel = async (data) => {
   try {
     const result = await pool.query(
-      `SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE ${data.sortBy} ILIKE '%${data.sort}%' OFFSET ${data.offset} LIMIT ${data.limit}`
+      `SELECT id AS user_id, photo as user_photo, name, last_work, domicile, skill_name FROM users WHERE ${data.sortBy} ILIKE '%${data.sort}%' OFFSET ${data.offset} LIMIT ${data.limit}`
     );
 
     return result;
@@ -16,7 +16,7 @@ const getAllUserModel = async (data) => {
 const searchAllUserModel = async (data) => {
   try {
     const result = await pool.query(
-      `SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE name ILIKE '%${data.search}%' UNION SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE last_work ILIKE '%${data.search}%' UNION SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE domicile ILIKE '%${data.search}%'`
+      `SELECT users.id AS user_id, users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE name ILIKE '%${data.search}%' UNION SELECT users.id AS user_id, users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE last_work ILIKE '%${data.search}%' UNION SELECT users.id AS user_id, users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE domicile ILIKE '%${data.search}%'`
     );
 
     return result;
