@@ -4,6 +4,7 @@ require('dotenv').config()
 const UserRecModel = require("../model/UserRecModel");
 const { getUserRecByEmail, getUserRecById } = require("../model/AuthModel");
 const { hashPassword, comparePassword } = require("../midlleware/hashing");
+const cloudinary = require('./../config/cloudinary');
 
 const getUserRecByIdController = async (req, res) => {
   const id = req.payload.id;
@@ -134,8 +135,9 @@ const loginController = async (req, res) => {
 };
 
 const updateRecProfile = async (req, res) => {
-  let { company_name, company_field, province, city, company_info, email, company_email, company_phone, linkedin_url, photo } = req.body;
   const id = req.payload.id;
+  let { company_name, company_field, province, city, company_info, email, company_email, company_phone, linkedin_url } = req.body;
+  const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
 
   try {
     let data = {
@@ -148,7 +150,7 @@ const updateRecProfile = async (req, res) => {
       company_email: company_email,
       company_phone: company_phone,
       linkedin_url: linkedin_url,
-      photo: photo
+      photo: photo.secure_url
     };
 
     const result = await UserRecModel.updateUserRecModel(data, id)
