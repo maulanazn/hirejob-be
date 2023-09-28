@@ -97,32 +97,79 @@ const putPortfolio = async (req, res) => {
   }
 };
 
+const getWorkEXPIdController = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const getIdData = await Workexp.getWorkExpById(id);
+    res.status(200).json({
+      status: ' Succes ',
+      message: ' View Id Data Exp',
+      data: getIdData.rows,
+    });
+  } catch (error) {
+    res.status(400).json({
+      Status: 'Bad request',
+      error: error.message,
+    });
+  }
+};
+
 const createWorkEXPController = async (req, res) => {
   const payload = req.payload;
   const { position, company_name, working_start_at, working_end_at, description } = req.body;
 
-  let data = {
-    user_name: payload.name,
-    position,
-    company_name,
-    working_start_at,
-    working_end_at,
-    description,
-    user_id: payload.id,
-  };
-
-  try {
-    let dataCreate = await Workexp.createExperienceModel(data);
-    res.status(201).json({
-      status: ' Succes ',
-      message: ' Create Data Succes',
-      data: dataCreate.rows,
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: ' Bad request',
-      error: error.message,
-    });
+  if (!req.file) {
+    let data = {
+      user_name: payload.name,
+      position,
+      company_name,
+      working_start_at,
+      working_end_at,
+      description,
+      user_id: payload.id,
+    };
+  
+    try {
+      let dataCreate = await Workexp.createExperienceModel(data);
+      res.status(201).json({
+        status: ' Succes ',
+        message: ' Create Data Succes',
+        data: dataCreate.rows,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: ' Bad request',
+        error: error.message,
+      });
+    }
+  } else {
+    const work_experience_photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
+  
+    let data = {
+      user_name: payload.name,
+      position,
+      company_name,
+      work_experience_photo: work_experience_photo.secure_url,
+      working_start_at,
+      working_end_at,
+      description,
+      user_id: payload.id,
+    };
+  
+    try {
+      let dataCreate = await Workexp.createExperienceModel(data);
+      res.status(201).json({
+        status: ' Succes ',
+        message: ' Create Data Succes',
+        data: dataCreate.rows,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: ' Bad request',
+        error: error.message,
+      });
+    }
   }
 };
 
@@ -130,30 +177,62 @@ const updateWorksEXPController = async (req, res) => {
   const { id } = req.params;
   const payload = req.payload;
   const { position, company_name, working_start_at, working_end_at, description } = req.body;
+  const resultById = await Workexp.getWorkExpById(id);
 
-  let data = {
-    user_name: payload.name,
-    position,
-    company_name,
-    working_start_at,
-    working_end_at,
-    description,
-    user_id: payload.id,
-  };
-
-  try {
-    const Updatedata = await Workexp.updateExpModel(data, id);
-    res.status(201).json({
-      status: 'Succes',
-      message: ' Succes Update Data',
-      data: Updatedata,
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'Bad request',
-      error: error.message,
-    });
+  if (!req.file) {
+    let data = {
+      user_name: payload.name || resultById.rows[0].user_name,
+      position: position || resultById.rows[0].position,
+      company_name: company_name || resultById.rows[0].company_name,
+      work_experience_photo: resultById.rows[0].work_experience_photo,
+      working_start_at: working_start_at || resultById.rows[0].working_start_at,
+      working_end_at: working_end_at || resultById.rows[0].working_end_at,
+      description: description || resultById.rows[0].description,
+      user_id: payload.id || resultById.rows[0].id,
+    };
+  
+    try {
+      const Updatedata = await Workexp.updateExpModel(data, id);
+      res.status(201).json({
+        status: 'Succes',
+        message: ' Succes Update Data',
+        data: Updatedata.rows,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 'Bad request',
+        error: error.message,
+      });
+    }
+  } else {
+    const work_experience_photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
+  
+    let data = {
+      user_name: payload.name || resultById.rows[0].user_name,
+      position: position || resultById.rows[0].position,
+      company_name: company_name || resultById.rows[0].company_name,
+      work_experience_photo: work_experience_photo.secure_url || resultById.rows[0].work_experience_photo,
+      working_start_at: working_start_at || resultById.rows[0].working_start_at,
+      working_end_at: working_end_at || resultById.rows[0].working_end_at,
+      description: description || resultById.rows[0].description,
+      user_id: payload.id || resultById.rows[0].id,
+    };
+  
+    try {
+      const Updatedata = await Workexp.updateExpModel(data, id);
+      res.status(201).json({
+        status: 'Succes',
+        message: ' Succes Update Data',
+        data: Updatedata.rows,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 'Bad request',
+        error: error.message,
+      });
+    }
   }
+
 };
 
 const getAllWorkEXPController = async (req, res) => {
@@ -198,5 +277,6 @@ module.exports = {
   createWorkEXPController,
   updateWorksEXPController,
   getAllWorkEXPController,
+  getWorkEXPIdController,
   deleteWorksEXP,
 };

@@ -7,7 +7,7 @@ const getSocialMediaController = async (req, res) => {
         return res.status(200).json({
             status: 'success',
             message: 'success getting all social media',
-            data: result.rows
+            data: result.rows[0]
         });
     } catch (error) {
         return res.status(400).json({

@@ -54,7 +54,8 @@ CREATE TABLE work_experience (
     working_start_at DATE,
     working_end_aT DATE,
     description TEXT,
-    created_at DATE DEFAULT NOW()
+    created_at DATE DEFAULT NOW(),
+    work_experience_photo VARCHAR
 );
 
 SELECT * FROM work_experience;
@@ -98,8 +99,22 @@ CREATE TABLE messages (
 -- SELECT ALL CANDIDATE DATA BASED ON UI
 SELECT photo_profile, name, last_work, province, city FROM users JOIN candidate_profile ON users.id = users.id JOIN photo ON photo.user_id = users.id;
 
+
 -- SELECT ALL TO PORTFOLIO VIEW
-SELECT users.photo, users.name, users.position, users.domicile, users.last_work, users.description, users.skill_name, portfolio.photo, portfolio.portfolio_name, work_experience.position, work_experience.company_name, work_experience.working_start_at, work_experience.working_end_at, work_experience.description FROM users JOIN portfolio ON portfolio.user_id = users.id JOIN work_experience ON work_experience.user_id = users.id WHERE users.id = '87090013-71bb-4906-b396-940552098eb3';
+-- iF DATA IS ONLY 1
+SELECT users.id AS user_id, users.photo AS user_photo, 
+users.name AS user_name, users.position AS user_position, users.domicile AS user_domicile, 
+users.last_work AS user_lastwork, users.description AS user_description, users.skill_name AS user_skill, 
+social_media.link AS socmed_link, portfolio.photo AS portfolio_photo, portfolio.portfolio_name, 
+work_experience.position AS work_position, work_experience.company_name, work_experience.working_start_at, 
+work_experience.working_end_at, work_experience.description AS work_description FROM users 
+INNER JOIN social_media ON social_media.user_id = users.id
+INNER JOIN portfolio ON portfolio.user_id = users.id
+INNER JOIN work_experience ON work_experience.user_id = users.id
+WHERE users.id = '09bf7c5d-d4a2-47bb-b56a-e534cf7402e7';
+
+-- If DATA IS MORE THAN 1
+SELECT name, position FROM users WHERE id = '09bf7c5d-d4a2-47bb-b56a-e534cf7402e7' UNION ALL SELECT position, company_name FROM work_experience WHERE user_id = '09bf7c5d-d4a2-47bb-b56a-e534cf7402e7' UNION ALL SELECT portfolio_name, app_type FROM portfolio WHERE user_id = '09bf7c5d-d4a2-47bb-b56a-e534cf7402e7' UNION ALL SELECT social_media_name, link FROM social_media WHERE user_id = '09bf7c5d-d4a2-47bb-b56a-e534cf7402e7';
 
 SELECT work_experience.position, users.city, users.province FROM users JOIN work_experience ON work_experience.user_id = users.id WHERE users.id = '9f415485-4629-415a-9e76-47c1fc08f181';
 
