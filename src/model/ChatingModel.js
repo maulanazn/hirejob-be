@@ -8,11 +8,12 @@ const fromChattingModel = async (body) => {
   try {
     const result = await pool.query(
       `INSERT INTO form_message (id, user_id, user_name, recruiter_id, recruiter_name)
-                         VALUES ($1, $2, $3, $4, $5)`,
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, user_id, user_name, recruiter_id, recruiter_name`,
       [id, body.user_id, body.user_name, body.recruiter_id, body.recruiter_name]
     );
 
-    return result;
+    return result.rows[0];
   } catch (error) {
     throw new Error(error.message);
   }
@@ -86,10 +87,10 @@ const validateMessage = async (form_message_id) => {
   return pool.query(result, value);
 };
 
-const viewFromValidation = async (user_id) => {
+const viewFromValidation = async (id) => {
   try {
-    const result = 'SELECT user_name FROM form_message  WHERE user_id = $1 ';
-    const value = [user_id];
+    const result = 'SELECT name FROM users  WHERE id = $1 ';
+    const value = [id];
 
     return pool.query(result, value);
   } catch (error) {
@@ -97,10 +98,10 @@ const viewFromValidation = async (user_id) => {
   }
 };
 
-const viewFromValidationRec = async (recruiter_id) => {
+const viewFromValidationRec = async (id) => {
   try {
-    const result = 'SELECT recruiter_name FROM form_message  WHERE recruiter_id = $1 ';
-    const value = [recruiter_id];
+    const result = 'SELECT name FROM user_recruiter  WHERE id = $1 ';
+    const value = [id];
 
     return pool.query(result, value);
   } catch (error) {

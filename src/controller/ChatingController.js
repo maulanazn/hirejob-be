@@ -6,6 +6,7 @@ const createFromcontroller = async (req, res) => {
 
   try {
     const user = await ChatingModels.validateUser(id);
+    // console.log(user);
 
     const data = {
       user_id: id,
@@ -13,6 +14,8 @@ const createFromcontroller = async (req, res) => {
       recruiter_id: payload.id,
       recruiter_name: payload.name,
     };
+
+    console.log(data);
 
     const createFrom = await ChatingModels.fromChattingModel(data);
     return res.status(201).json({
@@ -88,10 +91,11 @@ const showFromchatting = async (req, res) => {
 
   try {
     const user = await ChatingModels.viewFromValidation(payload);
+    console.log(user);
 
     if (user.rows[0]) {
       return res.status(200).json({
-        status: 'Succes',
+        status: 'Succes1',
         message: ' Show All Chat ',
         data: user,
       });
