@@ -11,6 +11,16 @@ const showSocialMediaModel = async (user_id) => {
     }
 }
 
+const showSocialMediaByIdModel = async (id) => {
+    try {
+        const result = await pool.query("SELECT * FROM social_media WHERE id = $1", [id]);
+
+        return result;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 const createSocialMediaModel = async (body, user_id) => {
     const id = uuidv4();
 
@@ -45,6 +55,7 @@ const deleteSocialMediaModel = async (id) => {
 
 module.exports = {
     showSocialMediaModel,
+    showSocialMediaByIdModel,
     createSocialMediaModel,
     updateSocialMediaModel,
     deleteSocialMediaModel,

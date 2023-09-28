@@ -1,4 +1,4 @@
-const { insertManyData } = require('../lib/HelperQuery');
+const { insertManyData, deleteFromMany, updateFromMany } = require('../lib/HelperQuery');
 const SocialMediaModel = require('./../model/SocmedModel');
 
 const getSocialMediaController = async (req, res) => {
@@ -34,14 +34,15 @@ const postSocialMediaController = async (req, res) => {
 
 const patchSocialMediaController = async (req, res) => {
     const {social_media_name, link} = req.body;
+    const resultById = await SocialMediaModel.showSocialMediaByIdModel(req.params.id);
 
     let data = {
-        social_media_name: social_media_name || undefined,
-        link: link || undefined
+        social_media_name: social_media_name || resultById.rows[0].social_media_name,
+        link: link || resultById.rows[0].link
     }
 
     try {
-        const result = await SocialMediaModel.updateSocialMediaModel(data, req.params.id)
+        updateFromMany(req.payload.id, data, req.params.id)
         
         return res.status(201).json({
             status: 'success',
@@ -57,11 +58,12 @@ const patchSocialMediaController = async (req, res) => {
 
 const deleteSocialMediaController = async (req, res) => {
     try {
-        const result = await SocialMediaModel.deleteSocialMediaModel(req.params.id)
+        deleteFromMany(req.payload.id, req.params.id)
         
         return res.status(200).json({
             status: 'success',
-            message: 'success deleting social media'        });
+            message: 'success deleting social media'
+        });
     } catch (error) {
         return res.status(400).json({
             status: 'Bad request',
