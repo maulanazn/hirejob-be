@@ -152,6 +152,35 @@ const loginController = async (req, res) => {
 const updateProfile = async (req, res) => {
   const id = req.payload.id;
   let { name, position, domicile, last_work, description, skill_name } = req.body;
+  const resultById = await getUserById(req.payload.id);
+  
+  if (!req.file) {
+    try {
+      let data = {
+        name: name || resultById.,
+        position: position,
+        domicile: domicile,
+        last_work: last_work,
+        description: description,
+        photo: photo.url,
+        skill_name: skill_name,
+      };
+  
+      const result = await UserModel.updateUserModel(data, id);
+  
+      return res.status(201).json({
+        status: 'succes',
+        Message: 'Your Update Data Success',
+        data: result.rows,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: 'Bad request',
+        message: error.message,
+      });
+    }
+  }
+
   const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
 
   try {
