@@ -157,13 +157,40 @@ const updateProfile = async (req, res) => {
   if (!req.file) {
     try {
       let data = {
-        name: name || resultById.,
-        position: position,
-        domicile: domicile,
-        last_work: last_work,
-        description: description,
-        photo: photo.url,
-        skill_name: skill_name,
+        name: name || resultById.rows[0].name,
+        position: position || resultById.rows[0].position,
+        domicile: domicile || resultById.rows[0].domicile,
+        last_work: last_work || resultById.rows[0].last_work,
+        description: description || resultById.rows[0].description,
+        photo: resultById.rows[0].photo,
+        skill_name: skill_name || resultById.rows[0].skill_name,
+      };
+  
+      const result = await UserModel.updateUserModel(data, id);
+  
+      return res.status(201).json({
+        status: 'succes',
+        Message: 'Your Update Data Success',
+        data: result.rows,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: 'Bad request',
+        message: error.message,
+      });
+    }
+  } else {
+    const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
+  
+    try {
+      let data = {
+        name: name || resultById.rows[0].name,
+        position: position || resultById.rows[0].position,
+        domicile: domicile || resultById.rows[0].domicile,
+        last_work: last_work || resultById.rows[0].last_work,
+        description: description || resultById.rows[0].description,
+        photo: photo || resultById.rows[0].photo,
+        skill_name: skill_name || resultById.rows[0].skill_name,
       };
   
       const result = await UserModel.updateUserModel(data, id);
@@ -181,32 +208,6 @@ const updateProfile = async (req, res) => {
     }
   }
 
-  const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
-
-  try {
-    let data = {
-      name: name,
-      position: position,
-      domicile: domicile,
-      last_work: last_work,
-      description: description,
-      photo: photo.url,
-      skill_name: skill_name,
-    };
-
-    const result = await UserModel.updateUserModel(data, id);
-
-    return res.status(201).json({
-      status: 'succes',
-      Message: 'Your Update Data Success',
-      data: result.rows,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      status: 'Bad request',
-      message: error.message,
-    });
-  }
 };
 
 module.exports = {
