@@ -43,6 +43,10 @@ CREATE TABLE social_media (
     link VARCHAR
 );
 
+SELECT * FROM social_media WHERE user_id = '900b1327-94d3-4e9b-86ae-b0f05cc9a5b7';
+INSERT INTO social_media (id, user_id, social_media_name, link) VALUES(0[], ';alksflajsdf', 'Github', 'github.com'), ('alsdjlfkas', ';alksflajsdf', 'Github', 'github.com');
+SELECT * FROM social_media WHERE user_id = '900b1327-94d3-4e9b-86ae-b0f05cc9a5b7';
+
 ALTER TABLE social_media ADD CONSTRAINT social_media_user_id_fkey FOREIGN KEY(user_id) REFERENCES users(id);
 
 CREATE TABLE work_experience (

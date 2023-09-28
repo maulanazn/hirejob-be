@@ -1,13 +1,14 @@
+const { insertManyData } = require('../lib/HelperQuery');
 const SocialMediaModel = require('./../model/SocmedModel');
 
 const getSocialMediaController = async (req, res) => {
     try {
         const result = await SocialMediaModel.showSocialMediaModel(req.payload.id)
-        
+        console.log(result.rows);
         return res.status(200).json({
             status: 'success',
             message: 'success getting all social media',
-            data: result.rows[0]
+            data: result.rows
         });
     } catch (error) {
         return res.status(400).json({
@@ -18,16 +19,8 @@ const getSocialMediaController = async (req, res) => {
 }
 
 const postSocialMediaController = async (req, res) => {
-    const {social_media_name, link} = req.body;
-
-    let data = {
-        social_media_name,
-        link
-    }
-
     try {
-        const result = await SocialMediaModel.createSocialMediaModel(data, req.payload.id)
-        
+        insertManyData(req.body, req.payload.id);
         return res.status(201).json({
             status: 'success',
             message: 'success creating social media',
