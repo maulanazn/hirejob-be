@@ -23,21 +23,21 @@ const createChatting = async (body) => {
   try {
     const result = await pool.query(
       `INSERT INTO messages (id, form_message_id , sender_id, user_name, message_detail)
-                           VALUES ($1, $2, $3, $4, $5)`,
-      [id, body.id_chat, body.id_pengirim, body.name, body.message_detail]
+                           VALUES ($1, $2, $3, $4, $5) RETURNING id, form_message_id , sender_id, user_name, position, message_detail`,
+      [id, body.form_message_id, body.sender_id, body.user_name, body.message_detail]
     );
 
-    const comment = result.rows[0];
+    // const comment = result.rows[0];
 
-    const io = getIO();
+    // const io = getIO();
 
-    if (io) {
-      io.emit('new comment', comment);
-    } else {
-      console.error('Socket.IO is not properly initialized.');
-    }
+    // if (io) {
+    //   io.emit('new comment', comment);
+    // } else {
+    //   console.error('Socket.IO is not properly initialized.');
+    // }
 
-    return comment;
+    return result;
   } catch (error) {
     throw new Error(error.message);
   }
@@ -49,7 +49,7 @@ const createChattingnext = async (body) => {
     const result = await pool.query(
       `INSERT INTO messages (id, form_message_id , sender_id, user_name, position, message_detail)
                            VALUES ($1, $2, $3, $4, $5, $6)`,
-      [id, body.id_chat, body.id_pengirim, body.name, body.position, body.message_detail]
+      [id, body.form_message_id, body.sender_id, body.user_name, body.position, body.message_detail]
     );
 
     return result;

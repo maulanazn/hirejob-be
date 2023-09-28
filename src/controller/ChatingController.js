@@ -33,50 +33,46 @@ const createChatting = async (req, res) => {
   const payload = req.payload;
   const body = req.body;
 
-  let data1 = {
-    id_chat: id,
-    id_pengirim: payload.id,
-    name: payload.name,
+  let data = {
+    form_message_id: id,
+    sender_id: payload.id,
+    user_name: payload.name,
     position: body.position,
     message_detail: body.message_detail,
   };
 
-  let data = {
-    id_chat: id,
-    id_pengirim: payload.id,
-    name: payload.name,
-    message_detail: body.message_detail,
-  };
-
   try {
-    const validasi = await ChatingModels.validateMessage(payload.id);
+    console.log(payload.id);
+    const validasi = await ChatingModels.validateMessage(id);
+    console.log(validasi);
     // console.log(validasi);
 
     if (!validasi.rows[0]) {
-      const chat = await ChatingModels.createChatting(data1);
-      res.status(201).json({
-        status: 'Succes',
-        message: 'Create Message Succes',
-        data: chat,
-      });
-    } else {
       console.log('datanya disini');
-      let data = {
-        id_chat: id,
-        id_pengirim: payload.id,
-        name: payload.name,
-        position: validasi.rows[0].position,
-        message_detail: body.message_detail,
-      };
-
       const chatdua = await ChatingModels.createChattingnext(data);
       res.status(201).json({
         status: 'Succes',
+        message: 'Create Message Succes',
+      });
+    } else {
+      let data1 = {
+        form_message_id: id,
+        sender_id: payload.id,
+        user_name: payload.name,
+        position: validasi.rows[0].position,
+        message_detail: body.message_detail,
+      };
+      const chat = await ChatingModels.createChattingnext(data1);
+      console.log('testing');
+
+      res.status(201).json({
+        status: 'Succes',
+
         message: 'Update Message Succes',
-        data: chatdua,
       });
     }
   } catch (error) {
+    console.log(error);
     return res.status(400).json({
       status: 'Bad request ',
       message: error.message,
@@ -116,10 +112,30 @@ const showFromchatting = async (req, res) => {
   }
 };
 
+const viewchatingController = async (req, res) => {
+  const { id } = req.params;
+  const payload = req.payload;
+
+  try {
+    const user = await ChatingModels.validateMessage(id);
+    return res.status(200).json({
+      status: 'Succes',
+      message: ' Show All Chat ',
+      data: user.rows,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: 'Bad request ',
+      message: error.message,
+    });
+  }
+};
+
 //=================================================== Module Exports =========================================
 
 module.exports = {
   createFromcontroller,
   createChatting,
   showFromchatting,
+  viewchatingController,
 };
