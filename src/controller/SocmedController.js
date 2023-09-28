@@ -4,7 +4,6 @@ const SocialMediaModel = require('./../model/SocmedModel');
 const getSocialMediaController = async (req, res) => {
     try {
         const result = await SocialMediaModel.showSocialMediaModel(req.payload.id)
-        console.log(result.rows);
         return res.status(200).json({
             status: 'success',
             message: 'success getting all social media',
