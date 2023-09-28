@@ -13,6 +13,18 @@ const userPortfolio = async (user_id) => {
   }
 };
 
+const showPortfolioById = async (id) => {
+  const id = uuidv4();
+
+  try {
+    const result = await pool.query("SELECT id, user_id, portfolio_name, repository_link, photo, app_type, created_at FROM portfolio WHERE id = $1", [id]);
+
+    return result;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 const createPortofolio = async (body) => {
   const id = uuidv4();
 
@@ -39,6 +51,7 @@ const updatePortofolio = async (body) => {
 
 module.exports = {
   userPortfolio,
+  showPortfolioById,
   createPortofolio,
   updatePortofolio,
 };

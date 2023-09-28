@@ -68,6 +68,24 @@ const getUserByIdController = async (req, res) => {
 const createUserController = async (req, res) => {
   let { email, name, password, phone, position } = req.body;
 
+  if (password.length <= 8) {
+    return res.status(409).json({
+      status: " fail",
+      message: "Password to Short",
+    });
+  }
+
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasLowerCase = /[a-z]/.test(password);
+  const hasSpecialChar = /[@.,!]/.test(password);
+
+  if (!hasUpperCase || !hasLowerCase || !hasSpecialChar) {
+    return res.status(409).json({
+      status: "Non-unique password.",
+      message: "The password you entered is not unique. Password must include at least one capital word, one lower word, and one special character.",
+    });
+  }
+
   let emailVertifikasi = await getUserByEmail(email);
   if (emailVertifikasi.rows[0]) {
     return res.status(409).json({
@@ -152,7 +170,7 @@ const loginController = async (req, res) => {
 const updateProfile = async (req, res) => {
   const id = req.payload.id;
   let { name, position, domicile, last_work, description, skill_name } = req.body;
-  const resultById = await getUserById(req.payload.id);
+  const resultById = await getUserById(id);
   
   if (!req.file) {
     try {
@@ -189,7 +207,7 @@ const updateProfile = async (req, res) => {
         domicile: domicile || resultById.rows[0].domicile,
         last_work: last_work || resultById.rows[0].last_work,
         description: description || resultById.rows[0].description,
-        photo: photo || resultById.rows[0].photo,
+        photo: photo.secure_url || resultById.rows[0].photo,
         skill_name: skill_name || resultById.rows[0].skill_name,
       };
   

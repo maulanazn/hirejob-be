@@ -27,7 +27,7 @@ const getUserRecByIdController = async (req, res) => {
 
 const createUserRecController = async (req, res) => {
   const { email, name, password, phone, position, company_name } = req.body;
-  // Panjang password
+
   if (password.length <= 8) {
     return res.status(409).json({
       status: " fail",
@@ -35,20 +35,17 @@ const createUserRecController = async (req, res) => {
     });
   }
 
-  // Validasi Unik Karater
   const hasUpperCase = /[A-Z]/.test(password);
   const hasLowerCase = /[a-z]/.test(password);
   const hasSpecialChar = /[@.,!]/.test(password);
 
   if (!hasUpperCase || !hasLowerCase || !hasSpecialChar) {
     return res.status(409).json({
-      error: "Non-unique password.",
-      message:
-        "The password you entered is not unique. Please choose a password that has not been used before.",
+      status: "Non-unique password.",
+      message: "The password you entered is not unique. Password must include at least one capital word, one lower word, and one special character.",
     });
   }
 
-  // Vertifikasi Email
   let emailVertifikasi = await getUserRecByEmail(email);
   if (emailVertifikasi.rows[0]) {
     return res.status(409).json({
@@ -57,11 +54,9 @@ const createUserRecController = async (req, res) => {
     });
   }
 
-  // Hashing password
   let hash = await hashPassword(password);
 
   try {
-    // change data
     let data = {
       email: email,
       name: name,
@@ -137,35 +132,68 @@ const loginController = async (req, res) => {
 const updateRecProfile = async (req, res) => {
   const id = req.payload.id;
   let { company_name, company_field, province, city, company_info, email, company_email, company_phone, linkedin_url } = req.body;
-  const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
+  const resultById = await getUserRecById(id);
 
-  try {
-    let data = {
-      company_name: company_name,
-      company_field: company_field,
-      province: province,
-      city: city,
-      company_info: company_info,
-      email: email,
-      company_email: company_email,
-      company_phone: company_phone,
-      linkedin_url: linkedin_url,
-      photo: photo.secure_url
-    };
-
-    const result = await UserRecModel.updateUserRecModel(data, id)
+  if (!req.file) {
+    try {
+      let data = {
+        company_name: company_name || resultById.rows[0].company_name,
+        company_field: company_field || resultById.rows[0].company_field,
+        province: province || resultById.rows[0].province,
+        city: city || resultById.rows[0].city,
+        company_info: company_info || resultById.rows[0].company_info,
+        email: email || resultById.rows[0].email,
+        company_email: company_email || resultById.rows[0].company_email,
+        company_phone: company_phone || resultById.rows[0].company_phone,
+        linkedin_url: linkedin_url || resultById.rows[0].linkedin_url,
+        photo: resultById.rows[0].photo
+      };
   
-    return res.status(201).json({
-      status: "succes",
-      Message: "Your Update Data Success",
-      data: result.rows,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      status: 'Bad request',
-      message: error.message
-    })
+      const result = await UserRecModel.updateUserRecModel(data, id)
+    
+      return res.status(201).json({
+        status: "succes",
+        Message: "Your Update Data Success",
+        data: result.rows,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: 'Bad request',
+        message: error.message
+      })
+    }
+  } else {
+    const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
+  
+    try {
+      let data = {
+        company_name: company_name || resultById.rows[0].company_name,
+        company_field: company_field || resultById.rows[0].company_field,
+        province: province || resultById.rows[0].province,
+        city: city || resultById.rows[0].city,
+        company_info: company_info || resultById.rows[0].company_info,
+        email: email || resultById.rows[0].email,
+        company_email: company_email || resultById.rows[0].company_email,
+        company_phone: company_phone || resultById.rows[0].company_phone,
+        linkedin_url: linkedin_url || resultById.rows[0].linkedin_url,
+        photo: photo.secure_url || resultById.rows[0].photo
+      };
+  
+      const result = await UserRecModel.updateUserRecModel(data, id)
+    
+      return res.status(201).json({
+        status: "succes",
+        Message: "Your Update Data Success",
+        data: result.rows,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: 'Bad request',
+        message: error.message
+      })
+    }
   }
+
 }
 
 module.exports = {
