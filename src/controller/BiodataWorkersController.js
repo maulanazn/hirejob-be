@@ -48,15 +48,42 @@ const postPortfolio = async (req, res) => {
 
 const putPortfolio = async (req, res) => {
   const { portfolio_name, repository_link, app_type } = req.body;
+  const resultById = await Portofolio.showPortfolioById(req.params.id);
 
   if (!req.file) {
     let data = {
-      portfolio_name,
-      repository_link,
-      app_type,
+      portfolio_name: portfolio_name || resultById.rows[0].portfolio_name,
+      repository_link: repository_link || resultById.rows[0].repository_link,
+      app_type: app_type || resultById.rows[0].app_type,
+      photo: resultById.rows[0].photo,
       id: req.params.id
     };
 
+    try {
+      const result = await Portofolio.updatePortofolio(data);
+
+      return res.status(201).json({
+        status: ' Succes ',
+        message: ' Succes update Portofolio',
+        data: result.rows,
+      });
+    } catch (error) {
+      res.status(400).json({
+        status: 'Bad request',
+        message: error.message,
+      });
+    }
+  } else {
+    const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
+  
+    let data = {
+      portfolio_name: portfolio_name || resultById.rows[0].portfolio_name,
+      repository_link: repository_link || resultById.rows[0].repository_link,
+      app_type: app_type || resultById.rows[0].app_type,
+      photo: photo.secure_url || resultById.rows[0].photo,
+      id: req.params.id
+    };
+  
     try {
       const result = await Portofolio.updatePortofolio(data);
       return res.status(201).json({
@@ -72,29 +99,6 @@ const putPortfolio = async (req, res) => {
     }
   }
 
-  const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
-
-  let data = {
-    portfolio_name,
-    repository_link,
-    app_type,
-    photo: photo.url,
-    id: req.params.id
-  };
-
-  try {
-    const result = await Portofolio.updatePortofolio(data);
-    return res.status(201).json({
-      status: ' Succes ',
-      message: ' Succes update Portofolio',
-      data: result.rows,
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'Bad request',
-      message: error.message,
-    });
-  }
 };
 
 const getWorkEXPIdController = async (req, res) => {
@@ -188,7 +192,7 @@ const updateWorksEXPController = async (req, res) => {
       working_start_at: working_start_at || resultById.rows[0].working_start_at,
       working_end_at: working_end_at || resultById.rows[0].working_end_at,
       description: description || resultById.rows[0].description,
-      user_id: payload.id || resultById.rows[0].id,
+      user_id: payload.id || resultById.rows[0].user_id,
     };
   
     try {

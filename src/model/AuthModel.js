@@ -35,15 +35,13 @@ const getUserRecByEmail = async (email) => {
 };
 
 const getUserRecById = async (id) => {
-  return new Promise((resolve, reject) =>
-    pool.query(`SELECT * FROM user_recruiter WHERE id ='${id}'`, (err, result) => {
-      if (!err) {
-        resolve(result);
-      } else {
-        reject(err);
-      }
-    })
-  );
+  try {
+    const result = await pool.query(`SELECT * FROM user_recruiter WHERE id = $1`, [id]);
+
+    return result;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
 module.exports = {
