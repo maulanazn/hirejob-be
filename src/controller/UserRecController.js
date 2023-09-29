@@ -11,7 +11,7 @@ const getUserRecByIdController = async (req, res) => {
 
   try {
     const resultUserRecById = await getUserRecById(id);
-    
+
     return res.status(200).json({
       status: "succes",
       Message: "Success get by id",
@@ -21,7 +21,7 @@ const getUserRecByIdController = async (req, res) => {
     return res.status(400).json({
       status: "Bad request",
       data: error.message
-    });    
+    });
   }
 }
 
@@ -119,7 +119,8 @@ const loginController = async (req, res) => {
     return res.status(201).json({
       status: "Succes",
       message: " Login Succes",
-      data: token,
+      data: userData.company_name,
+      access_token: token
     });
   } catch (error) {
     return res.status(400).json({
@@ -148,9 +149,9 @@ const updateRecProfile = async (req, res) => {
         linkedin_url: linkedin_url || resultById.rows[0].linkedin_url,
         photo: resultById.rows[0].photo
       };
-  
+
       const result = await UserRecModel.updateUserRecModel(data, id)
-    
+
       return res.status(201).json({
         status: "succes",
         Message: "Your Update Data Success",
@@ -164,7 +165,7 @@ const updateRecProfile = async (req, res) => {
     }
   } else {
     const photo = await cloudinary.uploader.upload(req.file.path, { Folders: 'profil' });
-  
+
     try {
       let data = {
         company_name: company_name || resultById.rows[0].company_name,
@@ -178,9 +179,9 @@ const updateRecProfile = async (req, res) => {
         linkedin_url: linkedin_url || resultById.rows[0].linkedin_url,
         photo: photo.secure_url || resultById.rows[0].photo
       };
-  
+
       const result = await UserRecModel.updateUserRecModel(data, id)
-    
+
       return res.status(201).json({
         status: "succes",
         Message: "Your Update Data Success",

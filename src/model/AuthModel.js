@@ -23,15 +23,13 @@ const getUserById = async (id) => {
 };
 
 const getUserRecByEmail = async (email) => {
-  return new Promise((resolve, reject) =>
-    pool.query(`SELECT * FROM user_recruiter WHERE email ='${email}'`, (err, result) => {
-      if (!err) {
-        resolve(result);
-      } else {
-        reject(err);
-      }
-    })
-  );
+  try {
+    const result = await pool.query(`SELECT * FROM user_recruiter WHERE email = $1`, [email]);
+
+    return result;
+  } catch (error) {
+    throw new Error(error.message);
+  }
 };
 
 const getUserRecById = async (id) => {
