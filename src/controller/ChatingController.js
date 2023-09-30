@@ -107,7 +107,7 @@ const showFromchatting = async (req, res) => {
       return res.status(200).json({
         status: 'Succes',
         message: ' Show All Chat ',
-        data: rec.rows,
+        data: rec,
       });
     }
   } catch (error) {

@@ -115,7 +115,8 @@ const getRecruiterInfoByUserId = async (userId) => {
       SELECT
           ur.name AS recruiter_name,
           ur.photo AS recruiter_photo,
-          m.position AS message_position
+          m.position AS message_position,
+          m.id AS message_id
       FROM
           form_message fm
       INNER JOIN
@@ -139,7 +140,8 @@ const getUserInfoAndFormMessageId = async (userId) => {
       SELECT
           u.name AS user_name,
           u.photo AS user_photo,
-          m.position AS message_position
+          m.position AS message_position,
+          m.id AS message_id
       FROM
           form_message fm
       INNER JOIN
@@ -150,8 +152,8 @@ const getUserInfoAndFormMessageId = async (userId) => {
           fm.recruiter_id = $1;
     `;
 
-    const result = await pool.query(query, [userId]);
-    return result;
+    const { rows } = await pool.query(query, [userId]);
+    return rows;
   } catch (error) {
     throw new Error(`Error getting user info and message by user_id: ${error.message}`);
   }
