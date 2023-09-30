@@ -132,7 +132,7 @@ const loginController = async (req, res) => {
 
 const updateRecProfile = async (req, res) => {
   const id = req.payload.id;
-  let { company_name, company_field, province, city, company_info, email, company_email, company_phone, linkedin_url } = req.body;
+  let { company_name, company_field, province, city, company_info, company_email, company_phone, linkedin_url } = req.body;
   const resultById = await getUserRecById(id);
 
   if (!req.file) {
@@ -143,7 +143,6 @@ const updateRecProfile = async (req, res) => {
         province: province || resultById.rows[0].province,
         city: city || resultById.rows[0].city,
         company_info: company_info || resultById.rows[0].company_info,
-        email: email || resultById.rows[0].email,
         company_email: company_email || resultById.rows[0].company_email,
         company_phone: company_phone || resultById.rows[0].company_phone,
         linkedin_url: linkedin_url || resultById.rows[0].linkedin_url,
@@ -173,7 +172,6 @@ const updateRecProfile = async (req, res) => {
         province: province || resultById.rows[0].province,
         city: city || resultById.rows[0].city,
         company_info: company_info || resultById.rows[0].company_info,
-        email: email || resultById.rows[0].email,
         company_email: company_email || resultById.rows[0].company_email,
         company_phone: company_phone || resultById.rows[0].company_phone,
         linkedin_url: linkedin_url || resultById.rows[0].linkedin_url,

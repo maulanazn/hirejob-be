@@ -17,7 +17,7 @@ const createUserRecModel = async (body) => {
 
 const updateUserRecModel = async (body, id) => {
   try {
-    const result = await pool.query(`UPDATE user_recruiter SET photo = $1, company_name = $2, company_field = $3, province = $4, city = $5, company_info = $6, email = $7, company_email = $8, company_phone = $9, linkedin_url = $10 WHERE id = $11`, [body.photo, body.company_name, body.company_field, body.province, body.city, body.company_info, body.email, body.company_email, body.company_phone, body.linkedin_url, id])
+    const result = await pool.query(`UPDATE user_recruiter SET photo = $1, company_name = $2, company_field = $3, province = $4, city = $5, company_info = $6, company_email = $8, company_phone = $9, linkedin_url = $10 WHERE id = $11`, [body.photo, body.company_name, body.company_field, body.province, body.city, body.company_info, body.company_email, body.company_phone, body.linkedin_url, id])
 
     return result;
   } catch(error) {
