@@ -116,7 +116,8 @@ const getRecruiterInfoByUserId = async (userId) => {
           ur.name AS recruiter_name,
           ur.photo AS recruiter_photo,
           m.position AS message_position,
-          m.id AS message_id
+        
+          fm.id 
       FROM
           form_message fm
       INNER JOIN
@@ -141,7 +142,8 @@ const getUserInfoAndFormMessageId = async (userId) => {
           u.name AS user_name,
           u.photo AS user_photo,
           m.position AS message_position,
-          m.id AS message_id
+        
+          fm.id
       FROM
           form_message fm
       INNER JOIN
