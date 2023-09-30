@@ -15,7 +15,7 @@ const getUserRecByIdController = async (req, res) => {
     return res.status(200).json({
       status: "succes",
       Message: "Success get by id",
-      data: resultUserRecById.rows,
+      data: resultUserRecById.rows[0],
     });
   } catch (error) {
     return res.status(400).json({
