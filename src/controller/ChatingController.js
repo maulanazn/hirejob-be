@@ -94,19 +94,20 @@ const showFromchatting = async (req, res) => {
     // console.log(user);
 
     if (user.rows[0]) {
-      const user1 = await ChatingModels.showNameRec(payload);
+      const user1 = await ChatingModels.getRecruiterInfoByUserId(payload);
       return res.status(200).json({
         status: 'Succes1',
         message: ' Show All Chat ',
         data: user1,
       });
     } else {
-      const rec = await ChatingModels.showNameCandidate(payload);
+      const rec = await ChatingModels.getUserInfoAndFormMessageId(payload);
+      console.log(rec);
 
       return res.status(200).json({
         status: 'Succes',
         message: ' Show All Chat ',
-        data: rec,
+        data: rec.rows,
       });
     }
   } catch (error) {

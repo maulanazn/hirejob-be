@@ -109,6 +109,54 @@ const viewFromValidationRec = async (id) => {
   }
 };
 
+const getRecruiterInfoByUserId = async (userId) => {
+  try {
+    const query = `
+      SELECT
+          ur.name AS recruiter_name,
+          ur.photo AS recruiter_photo,
+          m.position AS message_position
+      FROM
+          form_message fm
+      INNER JOIN
+          user_recruiter ur ON fm.recruiter_id = ur.id
+      INNER JOIN
+          messages m ON fm.id = m.form_message_id
+      WHERE
+          fm.user_id = $1;
+    `;
+
+    const { rows } = await pool.query(query, [userId]);
+    return rows;
+  } catch (error) {
+    throw new Error(`Error getting recruiter info and message position by user_id: ${error.message}`);
+  }
+};
+
+const getUserInfoAndFormMessageId = async (userId) => {
+  try {
+    const query = `
+      SELECT
+          u.name AS user_name,
+          u.photo AS user_photo,
+          m.position AS message_position
+      FROM
+          form_message fm
+      INNER JOIN
+          users u ON fm.user_id = u.id
+      INNER JOIN
+          messages m ON fm.id = m.form_message_id
+      WHERE
+          fm.recruiter_id = $1;
+    `;
+
+    const result = await pool.query(query, [userId]);
+    return result;
+  } catch (error) {
+    throw new Error(`Error getting user info and message by user_id: ${error.message}`);
+  }
+};
+
 module.exports = {
   fromChattingModel,
   createChatting,
@@ -119,4 +167,6 @@ module.exports = {
   validateUser,
   viewFromValidation,
   viewFromValidationRec,
+  getRecruiterInfoByUserId,
+  getUserInfoAndFormMessageId,
 };
