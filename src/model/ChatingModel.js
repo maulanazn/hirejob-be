@@ -60,15 +60,15 @@ const createChattingnext = async (body) => {
 };
 
 const showNameRec = async (user_id) => {
-  const result = 'SELECT * FROM fromchatting WHERE user_id= $1';
+  const result = 'SELECT recruiter_name, recruiter_id FROM form_message WHERE user_id= $1';
   const value = [user_id];
 
   return pool.query(result, value);
 };
 
-const showNameCandidate = async (id_rect) => {
-  const result = 'SELECT * FROM fromchatting WHERE id_rect = $1';
-  const value = [id_rect];
+const showNameCandidate = async (recruiter_id) => {
+  const result = 'SELECT user_id, user_name FROM form_message WHERE recruiter_id = $1';
+  const value = [recruiter_id];
 
   return pool.query(result, value);
 };

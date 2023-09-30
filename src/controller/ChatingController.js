@@ -91,24 +91,26 @@ const showFromchatting = async (req, res) => {
 
   try {
     const user = await ChatingModels.viewFromValidation(payload);
-    console.log(user);
+    // console.log(user);
 
     if (user.rows[0]) {
+      const user1 = await ChatingModels.showNameRec(payload);
       return res.status(200).json({
         status: 'Succes1',
         message: ' Show All Chat ',
-        data: user,
+        data: user1,
       });
     } else {
-      const rec = await ChatingModels.viewFromValidationRec(payload);
+      const rec = await ChatingModels.showNameCandidate(payload);
 
       return res.status(200).json({
         status: 'Succes',
         message: ' Show All Chat ',
-        data: rec.rows,
+        data: rec,
       });
     }
   } catch (error) {
+    console.log(error);
     return res.status(400).json({
       status: 'Bad request ',
       message: error.message,
