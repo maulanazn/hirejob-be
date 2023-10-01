@@ -62,10 +62,22 @@ const deleteExpModel = (id) => {
     throw new Error(error.message);
   }
 };
+
+const deletePortofolioModel = (id) => {
+  try {
+    const query = ' DELETE FROM portfolio WHERE id = $1';
+    const value = [id];
+  
+    return pool.query(query, value);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 module.exports = {
   createExperienceModel,
   updateExpModel,
   getAllWorkEXP,
   getWorkExpById,
   deleteExpModel,
+  deletePortofolioModel,
 };

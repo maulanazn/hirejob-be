@@ -101,6 +101,23 @@ const putPortfolio = async (req, res) => {
 
 };
 
+const deletePortofolioId = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await Workexp.deletePortofolioModel(id);
+    res.status(200).json({
+      status: ' Succes ',
+      message: 'Delete Your Exp Succes ',
+    });
+  } catch (error) {
+    res.status(400).json({
+      Status: 'Bad request',
+      error: error.message,
+    });
+  }
+};
+
 const getWorkEXPIdController = async (req, res) => {
   const id = req.params.id;
 
@@ -278,6 +295,7 @@ module.exports = {
   getUserPortfolio,
   postPortfolio,
   putPortfolio,
+  deletePortofolioId,
   createWorkEXPController,
   updateWorksEXPController,
   getAllWorkEXPController,
