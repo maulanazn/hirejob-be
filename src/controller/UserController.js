@@ -152,12 +152,18 @@ const loginController = async (req, res) => {
       email: userData.email,
     };
 
+    const responseData = {
+      id: userData.id,
+      position: userData.position
+    }
+
     const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '30d' });
 
     return res.status(201).json({
       status: 'Succes',
       message: ' Login Succes',
-      data: token,
+      data: responseData,
+      access_token: token,
     });
   } catch (error) {
     return res.status(400).json({
