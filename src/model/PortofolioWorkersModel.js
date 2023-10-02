@@ -1,6 +1,16 @@
 const { pool } = require('../config/pg');
 const { v4: uuidv4 } = require('uuid');
 
+const countPortfolioUser = async (user_id) => {
+  try {
+    const result = await pool.query("SELECT COUNT(*) FROM portfolio WHERE user_id = $1", [user_id]);
+
+    return result;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 const userPortfolio = async (user_id) => {
   const id = uuidv4();
 
@@ -49,6 +59,7 @@ const updatePortofolio = async (body) => {
 };
 
 module.exports = {
+  countPortfolioUser,
   userPortfolio,
   showPortfolioById,
   createPortofolio,

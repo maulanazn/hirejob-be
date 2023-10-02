@@ -65,7 +65,7 @@ CREATE TABLE work_experience (
 SELECT * FROM work_experience;
 INSERT INTO work_experience (id, user_name, user_id, position, company_name, working_start_at, working_end_at, description) VALUES(md5(random()::text),'maulinux', '51d75df0-5b74-47be-a48b-90b6b500b0a2', 'Back End Engineer at Grab', 'Grab', '2023-12-12', '2023-12-12', 'lakjsldjf');
 ALTER TABLE work_experience ADD CONSTRAINT work_experience_username_fkey FOREIGN KEY (user_id) REFERENCES users(id);
-ALTER 
+SELECT COUNT(*) FROM work_experience WHERE user_id = '90aba36c-0032-40d9-868a-d394971c13ae';
 
 CREATE TABLE portfolio (
     id VARCHAR(170) PRIMARY KEY,

@@ -2,6 +2,22 @@ const Portofolio = require('../model/PortofolioWorkersModel.js');
 const Workexp = require('../model/WorkExperienceModel.js');
 const cloudinary = require('../config/cloudinary');
 
+const countUserPortfolio = async (req, res) => {
+  try {
+    const result = await Portofolio.countPortfolioUser(req.payload.id);
+    return res.status(200).json({
+      status: ' Succes ',
+      message: ' Succes getting user Portofolio',
+      data: result.rows[0],
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'Bad request',
+      message: error.message,
+    });
+  }
+};
+
 const getUserPortfolio = async (req, res) => {
   try {
     const result = await Portofolio.userPortfolio(req.payload.id);
@@ -117,6 +133,23 @@ const deletePortofolioId = async (req, res) => {
     });
   }
 };
+
+const countUserWorkExperience = async (req, res) => {
+  try {
+    const result = await Workexp.countExperienceUser(req.payload.id);
+    return res.status(200).json({
+      status: ' Succes ',
+      message: ' Succes getting counted work experience user',
+      data: result.rows[0],
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: 'Bad request',
+      message: error.message,
+    });
+  }
+};
+
 
 const getWorkEXPIdController = async (req, res) => {
   const id = req.params.id;
@@ -292,10 +325,12 @@ const deleteWorksEXP = async (req, res) => {
 };
 
 module.exports = {
+  countUserPortfolio,
   getUserPortfolio,
   postPortfolio,
   putPortfolio,
   deletePortofolioId,
+  countUserWorkExperience,
   createWorkEXPController,
   updateWorksEXPController,
   getAllWorkEXPController,

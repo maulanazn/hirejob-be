@@ -1,6 +1,16 @@
 const { pool } = require('../config/pg');
 const { v4: uuidv4 } = require('uuid');
 
+const countExperienceUser = async (user_id) => {
+  try {
+    const result = await pool.query("SELECT COUNT(*) FROM work_experience WHERE user_id = $1", [user_id]);
+
+    return result;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 const createExperienceModel = async (body) => {
   const id = uuidv4();
   try {
@@ -74,6 +84,7 @@ const deletePortofolioModel = (id) => {
   }
 };
 module.exports = {
+  countExperienceUser,
   createExperienceModel,
   updateExpModel,
   getAllWorkEXP,
