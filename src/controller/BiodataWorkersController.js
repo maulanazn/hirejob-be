@@ -82,7 +82,8 @@ const postPortfolio = async (req, res) => {
 
 const putPortfolio = async (req, res) => {
   const { portfolio_name, repository_link, app_type } = req.body;
-  const resultById = await Portofolio.showPortfolioById(req.params.id);
+  const {id} = req.params;
+  const resultById = await Portofolio.showPortfolioById(id);
 
   if (!req.file) {
     let data = {
@@ -90,7 +91,7 @@ const putPortfolio = async (req, res) => {
       repository_link: repository_link || resultById.rows[0].repository_link,
       app_type: app_type || resultById.rows[0].app_type,
       photo: resultById.rows[0].photo,
-      id: req.params.id
+      id: id
     };
 
     try {
@@ -115,7 +116,7 @@ const putPortfolio = async (req, res) => {
       repository_link: repository_link || resultById.rows[0].repository_link,
       app_type: app_type || resultById.rows[0].app_type,
       photo: photo.secure_url || resultById.rows[0].photo,
-      id: req.params.id
+      id: id
     };
   
     try {

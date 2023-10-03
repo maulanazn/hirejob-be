@@ -49,7 +49,7 @@ const createPortofolio = async (body) => {
 
 const updatePortofolio = async (body) => {
   try {
-    const result = await pool.query("UPDATE portfolio SET portfolio_name = $1, repository_link = $2, app_type = $3, photo = $4 WHERE id = $5", [body.portfolio_name, body.repository_link, body.app_type, body.photo, body.user_id]
+    const result = await pool.query("UPDATE portfolio SET portfolio_name = $1, repository_link = $2, app_type = $3, photo = $4 WHERE id = $5", [body.portfolio_name, body.repository_link, body.app_type, body.photo, body.id]
     );
 
     return result;
