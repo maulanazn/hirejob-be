@@ -34,6 +34,24 @@ const getUserPortfolio = async (req, res) => {
   }
 };
 
+const getPortfolioId = async (req, res) => {
+  const {id} = req.params;
+  try {
+    const result = await Portofolio.showPortfolioById(id);
+    return res.status(201).json({
+      status: ' Succes ',
+      message: ' Succes getting Portofolio detail',
+      data: result.rows,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: 'Bad request',
+      message: error.message,
+    });
+  }
+};
+
+
 const postPortfolio = async (req, res) => {
   const payload = req.payload;
   const { portfolio_name, repository_link, app_type } = req.body;
@@ -327,6 +345,7 @@ const deleteWorksEXP = async (req, res) => {
 module.exports = {
   countUserPortfolio,
   getUserPortfolio,
+  getPortfolioId,
   postPortfolio,
   putPortfolio,
   deletePortofolioId,

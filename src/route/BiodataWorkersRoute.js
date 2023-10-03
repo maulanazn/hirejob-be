@@ -10,6 +10,7 @@ const {
   deletePortofolioId,
   countUserPortfolio,
   countUserWorkExperience,
+  getPortfolioId,
 } = require('../controller/BiodataWorkersController');
 const { VertifikasiToken } = require('../midlleware/VertifikasiToken');
 const upload = require('../midlleware/MulterPhoto');
@@ -19,6 +20,7 @@ const route = express.Router();
 
 route.get('/portfolio/count', VertifikasiToken, countUserPortfolio);
 route.get('/portfolio', VertifikasiToken, upload.single('photo'), getUserPortfolio);
+route.get('/portfolio/:id', VertifikasiToken, getPortfolioId);
 route.post('/portfolio', VertifikasiToken, upload.single('photo'), postPortfolio);
 route.put('/portfolio/:id', VertifikasiToken, upload.single('photo'), putPortfolio);
 route.delete('/portofolio/:id', VertifikasiToken, deletePortofolioId);
