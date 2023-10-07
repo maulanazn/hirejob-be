@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "hot": "nodemon src/index.js",
+    "hot": "node --watch src/index.js",
     "start": "node src/index.js",
     "test": "cross-env NODE_ENV=test jest --setTimeout=20000"
   },
@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/maulanazn/hirejob-be#readme",
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cloudinary": "^1.40.0",
     "cors": "^2.8.5",
