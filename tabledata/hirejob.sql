@@ -122,4 +122,4 @@ SELECT name, position FROM users WHERE id = '09bf7c5d-d4a2-47bb-b56a-e534cf7402e
 
 SELECT work_experience.position, users.city, users.province FROM users JOIN work_experience ON work_experience.user_id = users.id WHERE users.id = '9f415485-4629-415a-9e76-47c1fc08f181';
 
-SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE name ILIKE '%Clint%' UNION SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE last_work ILIKE '%n%' UNION SELECT users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE domicile ILIKE '%b%';
+SELECT users.id AS user_id, users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE name ILIKE '%$rust%' UNION SELECT users.id AS user_id, users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE last_work ILIKE '%rust%' UNION SELECT users.id AS user_id, users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE domicile ILIKE '%rust%' UNION SELECT users.id AS user_id, users.photo AS user_photo, name, last_work, domicile, skill_name FROM users WHERE skill_name ILIKE '%rust%';

@@ -13,7 +13,7 @@ const getAllUserController = async (req, res) => {
   const limitation = limit || 5;
 
   const data = {
-    search: search || undefined,
+    search: search || 'skill_name',
     sortBy: sortBy || 'name',
     sort: sort || '',
     offset: (pageSearched - 1) * limitation,
@@ -28,22 +28,23 @@ const getAllUserController = async (req, res) => {
       Message: 'Success get all user',
       data: resultUserSearch.rows,
     });
+  } else {
+    try {
+      const resultUsers = await UserModel.getAllUserModel(data);
+  
+      return res.status(200).json({
+        status: 'succes',
+        Message: 'Success get all user',
+        data: resultUsers.rows,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: 'Bad request',
+        data: error.message,
+      });
+    }
   }
 
-  try {
-    const resultUsers = await UserModel.getAllUserModel(data);
-
-    return res.status(200).json({
-      status: 'succes',
-      Message: 'Success get all user',
-      data: resultUsers.rows,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      status: 'Bad request',
-      data: error.message,
-    });
-  }
 };
 
 const getUserByIdController = async (req, res) => {
